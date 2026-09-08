@@ -153,6 +153,7 @@
       }
       .has-dropdown.is-open .dropdown-menu{
         max-height: 300px;
+        transform: none;
       }
       .dropdown-menu a{
         padding: 14px 40px;

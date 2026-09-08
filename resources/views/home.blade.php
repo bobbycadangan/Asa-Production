@@ -544,6 +544,7 @@
       }
       .has-dropdown.is-open .dropdown-menu{
         max-height: 300px;
+        transform: none;
       }
       .dropdown-menu a{
         padding: 14px 40px;
@@ -837,7 +838,7 @@
           </ul>
         </div>
 
-        <button class="site-nav_toggle" id="navToggle" data-i18n-aria-label="nav.toggleLabel" aria-label="Toggle menu">
+        <button class="site-nav_toggle" id="navToggle" data-i18n-aria-label="nav.toggleLabel" aria-label="Toggle menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -962,7 +963,10 @@
          tombol solid biru, kanan foto full-bleed tanpa rounded corner.
          Tombol mengarah ke halaman "Tentang Asa Production". --}}
     <section class="about-split" id="about">
-      <div class="about-split_col about-split_col--text wow fadeInLeft" data-wow-duration="0.9s">
+      <div class="about-split_col about-split_col--photo wow fadeInLeft" data-wow-duration="0.9s">
+        <img src="{{ $setting->about_image ? asset('storage/'.$setting->about_image) : asset('images/parallax.jpg') }}" alt="{{ $setting->site_title }}"/>
+      </div>
+      <div class="about-split_col about-split_col--text wow fadeInRight" data-wow-delay="0.15s" data-wow-duration="0.9s">
         <div class="about-split_inner">
           <span class="about-split_eyebrow">{{ $setting->about_label ?: 'Who We Are' }}</span>
           <h2 class="about-split_title">{!! nl2br(e($setting->about_title)) !!}</h2>
@@ -973,9 +977,6 @@
             {{ $setting->about_cta_text ?: 'Pelajari Lebih Lanjut' }}
           </a>
         </div>
-      </div>
-      <div class="about-split_col about-split_col--photo wow fadeInRight" data-wow-delay="0.15s" data-wow-duration="0.9s">
-        <img src="{{ $setting->about_image ? asset('storage/'.$setting->about_image) : asset('images/parallax.jpg') }}" alt="{{ $setting->site_title }}"/>
       </div>
     </section>
 
@@ -1220,11 +1221,15 @@
 
     if (toggle && menu) {
       toggle.addEventListener('click', function () {
-        menu.classList.toggle('is-open');
+        var open = menu.classList.toggle('is-open');
+        toggle.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
       menu.querySelectorAll('a').forEach(function (link) {
         link.addEventListener('click', function () {
           menu.classList.remove('is-open');
+          toggle.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
         });
       });
     }
