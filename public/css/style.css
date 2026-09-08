@@ -1169,16 +1169,6 @@ footer * + .copyright {
   width: 26px;
   height: 2px;
   background: #FFF;
-  transition: transform 0.25s ease, opacity 0.25s ease;
-}
-.site-nav_toggle.is-open span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-.site-nav_toggle.is-open span:nth-child(2) {
-  opacity: 0;
-}
-.site-nav_toggle.is-open span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
 }
 @media (max-width: 991px) {
   .site-nav_menu {
@@ -1195,8 +1185,7 @@ footer * + .copyright {
     transition: max-height 0.3s ease;
   }
   .site-nav_menu.is-open {
-    max-height: calc(100vh - 70px);
-    overflow-y: auto;
+    max-height: 400px;
   }
   .site-nav_menu li {
     width: 100%;
