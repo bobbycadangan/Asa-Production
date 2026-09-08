@@ -1,0 +1,281 @@
+/*========================================================
+  Portfolio page — diselaraskan dengan tema blog/about/contact
+  (memakai variabel warna & class yang sama dari style.css:
+  --brand-dark, --brand-mid, --brand-light, --brand-accent)
+=========================================================*/
+
+/*========================================================
+  Masthead
+=========================================================*/
+.portfolio-masthead{
+  background: linear-gradient(180deg, rgba(0, 20, 46, 0.55) 0%, rgba(0, 20, 46, 0.85) 100%), url("../images/parallax.jpg") center center/cover no-repeat;
+  padding: 150px 0 70px;
+  color: #fff;
+  position: relative;
+}
+.portfolio-masthead .container{
+  max-width: 1200px;
+  position: relative;
+  z-index: 2;
+}
+.portfolio-masthead .eyebrow{
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 12.5px;
+  color: var(--brand-accent);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+.portfolio-masthead h1{
+  color: #fff;
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.15;
+  margin: 0 0 14px;
+}
+.portfolio-masthead p{
+  color: rgba(255,255,255,.78);
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 620px;
+  margin: 0;
+}
+
+/*========================================================
+  Filter tabs
+=========================================================*/
+.portfolio-filter-wrap{
+  background: #fff;
+  border-bottom: 1px solid #eceef2;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.portfolio-filter{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 22px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+}
+.portfolio-filter_tab{
+  background: none;
+  border: none;
+  padding: 4px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  position: relative;
+  transition: color .2s ease;
+  white-space: nowrap;
+}
+.portfolio-filter_tab::after{
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 2px;
+  background: var(--brand-light);
+  transition: width .25s ease;
+}
+.portfolio-filter_tab:hover{
+  color: var(--brand-dark);
+}
+.portfolio-filter_tab.is-active{
+  color: var(--brand-light);
+}
+.portfolio-filter_tab.is-active::after{
+  width: 100%;
+}
+
+/*========================================================
+  Grid & card
+=========================================================*/
+.portfolio-wrap{
+  background: #fff;
+}
+.portfolio-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px 40px;
+}
+.portfolio-card{
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid #eceef2;
+  box-shadow: 0 10px 30px -18px rgba(0,34,76,.18);
+  transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease;
+  display: flex;
+  flex-direction: column;
+}
+.portfolio-card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 22px 40px -16px rgba(0,34,76,.28);
+}
+.portfolio-card[hidden]{
+  display: none;
+}
+.portfolio-card_thumb{
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/10;
+  background: linear-gradient(135deg, var(--brand-light), var(--brand-dark));
+  overflow: hidden;
+  border: none;
+  padding: 0;
+  cursor: zoom-in;
+}
+.portfolio-card_thumb img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s cubic-bezier(.22,1,.36,1);
+}
+.portfolio-card:hover .portfolio-card_thumb img{
+  transform: scale(1.08);
+}
+.portfolio-card_body{
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.portfolio-card_tag{
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--brand-light);
+  background: rgba(0, 81, 181, .08);
+  border-radius: 999px;
+  padding: 4px 12px;
+  margin-bottom: 10px;
+}
+.portfolio-card_title{
+  font-size: 18px;
+  line-height: 1.4;
+  margin: 0 0 8px;
+  color: #1a2233;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 700;
+}
+.portfolio-card_desc{
+  font-size: 14px;
+  line-height: 1.65;
+  color: #6b7280;
+  margin: 0 0 14px;
+  flex: 1;
+}
+.portfolio-card_link{
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--brand-accent);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap .2s ease;
+  align-self: flex-start;
+}
+.portfolio-card_link:hover{
+  gap: 10px;
+}
+
+.portfolio-empty-filtered{
+  text-align: center;
+  color: #808289;
+  padding: 30px 20px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.portfolio-empty-filtered[hidden]{
+  display: none;
+}
+
+/*========================================================
+  Lightbox (tampilan gambar penuh, vanilla JS — konsisten
+  dengan pendekatan halaman lain yang tidak memuat jQuery)
+=========================================================*/
+.portfolio-lightbox{
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 12, 28, .92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .25s ease;
+}
+.portfolio-lightbox.is-open{
+  opacity: 1;
+  visibility: visible;
+}
+.portfolio-lightbox_content{
+  max-width: min(900px, 100%);
+  max-height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.portfolio-lightbox_content img{
+  max-width: 100%;
+  max-height: 78vh;
+  border-radius: 12px;
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,.6);
+}
+.portfolio-lightbox_content figcaption{
+  color: #fff;
+  margin-top: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+}
+.portfolio-lightbox_close{
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: rgba(255,255,255,.08);
+  border: none;
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+.portfolio-lightbox_close:hover{
+  background: rgba(255,255,255,.18);
+}
+
+@media (max-width: 767px){
+  .portfolio-masthead{
+    padding: 120px 0 50px;
+  }
+  .portfolio-filter{
+    gap: 8px 20px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+}

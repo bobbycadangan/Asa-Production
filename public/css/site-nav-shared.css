@@ -1,0 +1,257 @@
+/*========================================================
+  Site nav — shared komponen navbar (marquee promo, dropdown
+  menu, language switcher).
+  Diambil dari style navbar landing page (resources/views/home.blade.php)
+  supaya navbar di halaman blog identik strukturnya dengan navbar landing page.
+========================================================*/
+
+    /* ===== Navbar running text (marquee) ===== */
+    .site-nav_marquee{
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      max-width: 260px;
+      margin: 0 4px;
+      white-space: nowrap;
+      position: relative;
+    }
+    .site-nav_marquee::before,
+    .site-nav_marquee::after{
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 20px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .site-nav_marquee::before{
+      left: 0;
+      background: linear-gradient(to right, rgba(0,20,46,1), rgba(0,20,46,0));
+    }
+    .site-nav_marquee::after{
+      right: 0;
+      background: linear-gradient(to left, rgba(0,20,46,1), rgba(0,20,46,0));
+    }
+    .site-nav_marquee-track{
+      display: inline-block;
+      white-space: nowrap;
+      padding-left: 100%;
+      animation: site-nav-marquee 14s linear infinite;
+    }
+    .site-nav_marquee-track span{
+      display: inline-block;
+      padding: 0 40px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #ffd166;
+    }
+    @keyframes site-nav-marquee{
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    @media (max-width: 991px){
+      .site-nav_marquee{
+        display: none;
+      }
+    }
+
+    /* ===== Navbar dropdown groups (kreasiai.com style, lebih ringkas) ===== */
+    .site-nav_menu .has-dropdown{
+      position: relative;
+    }
+    .dropdown-toggle{
+      background: none;
+      border: none;
+      color: #FFF;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 0 0 4px;
+    }
+    .dropdown-toggle:hover{
+      color: var(--brand-accent);
+    }
+    .dropdown-toggle i{
+      font-size: 11px;
+      transition: transform .2s ease;
+    }
+    .has-dropdown:hover .dropdown-toggle i,
+    .has-dropdown.is-open .dropdown-toggle i{
+      transform: rotate(180deg);
+    }
+    .dropdown-menu{
+      list-style: none;
+      margin: 0;
+      padding: 10px 0;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      min-width: 190px;
+      background: #0d1f36;
+      border-radius: 10px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50%) translateY(8px);
+      transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+      z-index: 20;
+    }
+    .dropdown-menu li + li{
+      margin-top: 2px;
+    }
+    .dropdown-menu a{
+      display: block;
+      padding: 10px 20px;
+      color: #cfd6e2;
+      font-size: 14px;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+    .dropdown-menu a::after{
+      display: none;
+    }
+    .dropdown-menu a:hover{
+      color: var(--brand-accent);
+      background: rgba(255,255,255,.06);
+    }
+    .has-dropdown:hover .dropdown-menu,
+    .has-dropdown.is-open .dropdown-menu{
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+    @media (max-width: 991px){
+      .site-nav_menu .has-dropdown{
+        width: 100%;
+      }
+      .dropdown-toggle{
+        width: 100%;
+        padding: 16px 24px;
+        justify-content: space-between;
+      }
+      .dropdown-menu{
+        position: static;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        box-shadow: none;
+        background: rgba(255,255,255,.03);
+        border-radius: 0;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .25s ease;
+      }
+      .has-dropdown.is-open .dropdown-menu{
+        max-height: 300px;
+      }
+      .dropdown-menu a{
+        padding: 14px 40px;
+      }
+    }
+
+    /* ===== Language switcher (dropdown, tampilan bendera SVG) ===== */
+    .site-nav_utility{
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 0 0 auto;
+    }
+    .site-nav_lang{
+      position: relative;
+    }
+    .lang-toggle{
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.16);
+      color: #FFF;
+      font-family: inherit;
+      text-transform: none;
+      padding: 6px 10px;
+      border-radius: 30px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .lang-toggle:hover{
+      background: rgba(255,255,255,.16);
+    }
+    .lang-toggle i{
+      font-size: 9px;
+      opacity: .8;
+    }
+    .lang-flag-icon{
+      display: block;
+      width: 22px;
+      height: 15px;
+      border-radius: 3px;
+      overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.3);
+      flex-shrink: 0;
+    }
+    .lang-flag-icon svg{
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    #langSwitcher .dropdown-menu.lang-menu{
+      left: auto;
+      right: 0;
+      min-width: 140px;
+      padding: 8px;
+      transform: translateY(8px);
+    }
+    #langSwitcher.is-open .dropdown-menu.lang-menu,
+    #langSwitcher:hover .dropdown-menu.lang-menu{
+      transform: translateY(0);
+    }
+    .lang-menu li + li{
+      margin-top: 4px !important;
+    }
+    .lang-option{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      height: 32px;
+      background: none;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      padding: 0 10px 0 6px;
+      cursor: pointer;
+    }
+    .lang-option:hover{
+      background: rgba(255,255,255,.06);
+    }
+    .lang-option.is-active{
+      border-color: var(--brand-accent);
+      background: rgba(255,255,255,.06);
+    }
+    .lang-option-label{
+      color: #fff;
+      font-size: 12px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    @media (max-width: 991px){
+      .site-nav_utility{
+        gap: 10px;
+      }
+      .lang-toggle{
+        padding: 5px 8px;
+      }
+      .lang-flag-icon{
+        width: 20px;
+        height: 14px;
+      }
+    }
