@@ -362,10 +362,39 @@
     }
     @media (max-width: 767px){
       .footer-columns{
-        padding: 40px 0 20px;
+        padding: 32px 0 12px;
+      }
+      /* Lay footer columns out 2-per-row instead of each stacking full width;
+         this is what was making the footer so tall on mobile. */
+      .footer-columns .row{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0 20px;
+      }
+      .footer-columns .row > [class*="grid_"]{
+        width: calc(50% - 10px);
+        float: none;
+        margin-left: 0;
+        margin-top: 0;
+      }
+      .footer-col.footer-col--brand{
+        width: 100%;
       }
       .footer-col{
         text-align: center;
+        margin-bottom: 20px;
+      }
+      .footer-col.footer-col--brand p{
+        max-width: none;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .footer-col h4{
+        margin-bottom: 10px;
+      }
+      .footer-links li + li{
+        margin-top: 8px;
       }
       .footer-brand{
         justify-content: center;
@@ -375,6 +404,9 @@
       }
       .footer-social{
         justify-content: center;
+      }
+      .well4 .container.center hr{
+        margin-top: 0;
       }
     }
 
@@ -837,7 +869,7 @@
           </ul>
         </div>
 
-        <button class="site-nav_toggle" id="navToggle" data-i18n-aria-label="nav.toggleLabel" aria-label="Toggle menu">
+        <button class="site-nav_toggle" id="navToggle" data-i18n-aria-label="nav.toggleLabel" aria-label="Toggle menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -853,7 +885,18 @@
   </nav>
 
   {{-- ======================== HEADER ======================== --}}
-  <header class="vide" id="home" data-vide-bg="{{ $setting->hero_video ? asset('storage/'.$setting->hero_video) : asset('video/video-bg') }}">
+  {{-- data-vide-bg drives the JS video/poster swap; the inline background-image below is a
+       CSS-only fallback so the hero is never blank if the vide script fails or loads late
+       (this happens on mobile more often, since document.write-injected scripts can be
+       blocked or delayed by the browser on slow connections). --}}
+  @php(
+    $heroPosterUrl = ($setting->hero_video && \Illuminate\Support\Str::endsWith($setting->hero_video, ['.jpg', '.jpeg', '.png', '.webp']))
+      ? asset('storage/'.$setting->hero_video)
+      : asset('video/video-bg.jpg')
+  )
+  <header class="vide" id="home"
+          data-vide-bg="{{ $setting->hero_video ? asset('storage/'.$setting->hero_video) : asset('video/video-bg') }}"
+          style="background-image:url('{{ $heroPosterUrl }}');background-size:cover;background-position:center center;">
     <div class="container vide_content" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:40px;">
       <div class="hero-text hero-fade-in" style="flex:1 1 320px;align-self:center;max-width:560px;">
         <h2 class="hero-fade-in_item" style="margin:0 0 16px 0;">{{ $setting->hero_title }}</h2>
@@ -1220,11 +1263,15 @@
 
     if (toggle && menu) {
       toggle.addEventListener('click', function () {
-        menu.classList.toggle('is-open');
+        var open = menu.classList.toggle('is-open');
+        toggle.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
       menu.querySelectorAll('a').forEach(function (link) {
         link.addEventListener('click', function () {
           menu.classList.remove('is-open');
+          toggle.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
         });
       });
     }

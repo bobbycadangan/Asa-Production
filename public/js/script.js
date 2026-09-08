@@ -20,7 +20,19 @@ document.addEventListener( 'DOMContentLoaded', function() {
 });
 
 function include(scriptUrl) {
-    document.write('<script src="' + scriptUrl + '"></script>');
+    // Was: document.write('<script src="' + scriptUrl + '"></script>').
+    // document.write-injected scripts get silently blocked or delayed by mobile
+    // browsers on slow connections (Chrome's document.write intervention), which
+    // is the main reason things like the vide hero background sometimes never
+    // showed up on mobile. Appending a real <script> tag loads synchronously in
+    // the same order but is never blocked this way.
+    document.write('<span style="display:none" data-include-marker="' + scriptUrl + '"></span>');
+    var marker = document.querySelector('[data-include-marker="' + scriptUrl + '"]');
+    var s = document.createElement('script');
+    s.src = scriptUrl;
+    s.async = false; // preserve original in-order execution semantics
+    marker.parentNode.insertBefore(s, marker);
+    marker.parentNode.removeChild(marker);
 }
 
 function isIE() {

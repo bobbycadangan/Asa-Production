@@ -134,12 +134,45 @@ body.blog-body{
 }
 @media (max-width: 767px){
   .footer-columns{
-    padding: 40px 0 20px;
+    padding: 32px 0 12px;
+  }
+  /* Lay footer columns out 2-per-row instead of each stacking full width;
+     that full stacking (plus grid.css's 70px gap between stacked columns)
+     is what was making the footer so tall on mobile. */
+  .footer-columns .row{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0 20px;
+  }
+  .footer-columns .row > [class*="grid_"]{
+    width: calc(50% - 10px);
+    float: none;
+    margin-left: 0;
+    margin-top: 0;
+  }
+  .footer-col.footer-col--brand{
+    width: 100%;
   }
   .footer-col{
     text-align: center;
+    margin-bottom: 20px;
+  }
+  .footer-col.footer-col--brand p{
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .footer-col h4{
+    margin-bottom: 10px;
+  }
+  .footer-links li + li{
+    margin-top: 8px;
   }
   .footer-brand{
+    justify-content: center;
+  }
+  .footer-badges{
     justify-content: center;
   }
   .footer-social{
