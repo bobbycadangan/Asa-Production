@@ -40,7 +40,11 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            // Diarahkan langsung ke public/storage (folder asli, bukan symlink) supaya
+            // upload otomatis bisa diakses browser tanpa perlu `php artisan storage:link`.
+            // Symlink itu tidak ikut ke-deploy ke Railway (symlink tidak dibuat ulang
+            // otomatis di server baru), jadi file upload jadi 404 walau filenya ada.
+            'root' => public_path('storage'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
             'throw' => false,
