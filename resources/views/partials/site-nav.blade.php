@@ -36,6 +36,10 @@
           <li><a href="{{ route('contact') }}" data-i18n="nav.contact">Kontak</a></li>
         </ul>
       </li>
+      {{-- Slot kosong: JS (site-nav.js) memindahkan #langSwitcher ke sini
+           saat tampilan mobile, supaya ganti bahasa jadi bagian dari
+           dropdown hamburger. Kosong = tersembunyi otomatis (di desktop). --}}
+      <li class="site-nav_lang-item" id="navLangSlot"></li>
     </ul>
 
     <div class="site-nav_utility">
@@ -73,7 +77,7 @@
         </ul>
       </div>
 
-      <button class="site-nav_toggle" id="navToggle" data-i18n-aria-label="nav.toggleLabel" aria-label="Toggle menu" aria-expanded="false">
+      <button class="site-nav_toggle" id="navToggle" data-i18n-aria-label="nav.toggleLabel" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
     </div>

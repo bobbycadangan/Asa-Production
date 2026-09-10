@@ -153,6 +153,12 @@
       }
       .has-dropdown.is-open .dropdown-menu{
         max-height: 300px;
+        /* .has-dropdown.is-open .dropdown-menu (di luar media query, dipakai
+           untuk versi desktop) men-set transform: translateX(-50%) translateY(0)
+           dan spesifisitasnya sama tinggi dengan reset "transform: none" di atas,
+           jadi tanpa baris ini dia menang lewat urutan CSS dan mendorong seluruh
+           submenu (isi teksnya) keluar layar ke kiri saat dibuka di mobile —
+           itu sebabnya teks dropdown terlihat hilang. */
         transform: none;
       }
       .dropdown-menu a{
@@ -254,5 +260,57 @@
       .lang-flag-icon{
         width: 20px;
         height: 14px;
+      }
+    }
+
+    /* ===== Language switcher dipindah ke dalam dropdown hamburger (mobile
+       saja). #navLangSlot adalah slot <li> kosong di akhir #navMenu; JS
+       (site-nav.js / home.blade.php) memindahkan #langSwitcher ke situ saat
+       lebar layar <= 991px, dan mengembalikannya ke .site-nav_utility saat
+       tampilan desktop — jadi markup & tampilan desktop sama sekali tidak
+       berubah. ===== */
+    #navLangSlot:empty{
+      display: none;
+    }
+    @media (max-width: 991px){
+      #navLangSlot{
+        border-top: 1px solid rgba(255,255,255,.08);
+      }
+      #navLangSlot .lang-toggle{
+        width: 100%;
+        background: none;
+        border: none;
+        border-radius: 0;
+        padding: 16px 24px;
+        justify-content: space-between;
+      }
+      #navLangSlot .lang-toggle:hover{
+        background: rgba(255,255,255,.06);
+      }
+      #langSwitcher .dropdown-menu.lang-menu{
+        position: static;
+        left: auto;
+        right: auto;
+        transform: none;
+        min-width: 0;
+        width: 100%;
+        padding: 0;
+        box-shadow: none;
+        background: rgba(255,255,255,.03);
+        border-radius: 0;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 1;
+        visibility: visible;
+        transition: max-height .25s ease;
+      }
+      #langSwitcher.is-open .dropdown-menu.lang-menu{
+        max-height: 200px;
+      }
+      #navLangSlot .lang-option{
+        width: 100%;
+        height: auto;
+        border-radius: 0;
+        padding: 12px 40px;
       }
     }

@@ -21,15 +21,11 @@
 
   if (toggle && menu) {
     toggle.addEventListener('click', function () {
-      var open = menu.classList.toggle('is-open');
-      toggle.classList.toggle('is-open', open);
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menu.classList.toggle('is-open');
     });
     menu.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', function () {
         menu.classList.remove('is-open');
-        toggle.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
       });
     });
   }
@@ -53,6 +49,41 @@
       });
     }
   });
+
+  // ===== Pindahkan tombol ganti bahasa ke dalam dropdown hamburger =====
+  // Di layar mobile (<=991px) #langSwitcher dipindah jadi item terakhir
+  // #navMenu (lewat slot kosong #navLangSlot) supaya jadi bagian dari
+  // dropdown hamburger. Di layar desktop, elemen yang sama dikembalikan ke
+  // posisi semula di .site-nav_utility — jadi tampilan desktop tidak
+  // berubah sama sekali.
+  (function () {
+    var MOBILE_QUERY = '(max-width: 991px)';
+
+    function placeLangSwitcher() {
+      var lang = document.getElementById('langSwitcher');
+      var slot = document.getElementById('navLangSlot');
+      var utility = document.querySelector('.site-nav_utility');
+      if (!lang || !slot || !utility) { return; }
+
+      var isMobile = window.matchMedia(MOBILE_QUERY).matches;
+      if (isMobile) {
+        if (lang.parentElement !== slot) { slot.appendChild(lang); }
+      } else if (lang.parentElement !== utility) {
+        var toggleBtn = document.getElementById('navToggle');
+        utility.insertBefore(lang, toggleBtn || null);
+      }
+    }
+
+    placeLangSwitcher();
+
+    var mq = window.matchMedia(MOBILE_QUERY);
+    if (mq.addEventListener) {
+      mq.addEventListener('change', placeLangSwitcher);
+    } else if (mq.addListener) { // Safari lama
+      mq.addListener(placeLangSwitcher);
+    }
+    window.addEventListener('resize', placeLangSwitcher);
+  })();
 
   var year = document.getElementById('copyright-year');
   if (year) {

@@ -544,6 +544,11 @@
       }
       .has-dropdown.is-open .dropdown-menu{
         max-height: 300px;
+        /* Tanpa baris ini, transform: translateX(-50%) translateY(0) dari
+           .has-dropdown.is-open .dropdown-menu (versi desktop) menang lewat
+           urutan CSS dan mendorong seluruh submenu (isi teksnya) keluar layar
+           ke kiri saat dibuka di mobile — itu sebabnya teks dropdown terlihat
+           hilang. */
         transform: none;
       }
       .dropdown-menu a{
@@ -645,6 +650,57 @@
       .lang-flag-icon{
         width: 20px;
         height: 14px;
+      }
+    }
+
+    /* ===== Language switcher dipindah ke dalam dropdown hamburger (mobile
+       saja). #navLangSlot adalah slot <li> kosong di akhir #navMenu; JS di
+       bawah memindahkan #langSwitcher ke situ saat lebar layar <= 991px, dan
+       mengembalikannya ke .site-nav_utility saat tampilan desktop — jadi
+       markup & tampilan desktop sama sekali tidak berubah. ===== */
+    #navLangSlot:empty{
+      display: none;
+    }
+    @media (max-width: 991px){
+      #navLangSlot{
+        border-top: 1px solid rgba(255,255,255,.08);
+      }
+      #navLangSlot .lang-toggle{
+        width: 100%;
+        background: none;
+        border: none;
+        border-radius: 0;
+        padding: 16px 24px;
+        justify-content: space-between;
+      }
+      #navLangSlot .lang-toggle:hover{
+        background: rgba(255,255,255,.06);
+      }
+      #langSwitcher .dropdown-menu.lang-menu{
+        position: static;
+        left: auto;
+        right: auto;
+        transform: none;
+        min-width: 0;
+        width: 100%;
+        padding: 0;
+        box-shadow: none;
+        background: rgba(255,255,255,.03);
+        border-radius: 0;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 1;
+        visibility: visible;
+        transition: max-height .25s ease;
+      }
+      #langSwitcher.is-open .dropdown-menu.lang-menu{
+        max-height: 200px;
+      }
+      #navLangSlot .lang-option{
+        width: 100%;
+        height: auto;
+        border-radius: 0;
+        padding: 12px 40px;
       }
     }
 
@@ -801,6 +857,10 @@
             <li><a href="{{ route('contact') }}" data-i18n="nav.contact">Kontak</a></li>
           </ul>
         </li>
+        {{-- Slot kosong: JS di bawah memindahkan #langSwitcher ke sini saat
+             tampilan mobile, supaya ganti bahasa jadi bagian dari dropdown
+             hamburger. Kosong = tersembunyi otomatis (di desktop). --}}
+        <li class="site-nav_lang-item" id="navLangSlot"></li>
       </ul>
 
       <div class="site-nav_utility">
@@ -838,7 +898,7 @@
           </ul>
         </div>
 
-        <button class="site-nav_toggle" id="navToggle" data-i18n-aria-label="nav.toggleLabel" aria-label="Toggle menu" aria-expanded="false">
+        <button class="site-nav_toggle" id="navToggle" data-i18n-aria-label="nav.toggleLabel" aria-label="Toggle menu">
           <span></span><span></span><span></span>
         </button>
       </div>
@@ -854,7 +914,20 @@
   </nav>
 
   {{-- ======================== HEADER ======================== --}}
-  <header class="vide" id="home" data-vide-bg="{{ $setting->hero_video ? asset('storage/'.$setting->hero_video) : asset('video/video-bg') }}">
+  @php
+    $heroVideoIsWebm = $setting->hero_video && \Illuminate\Support\Str::endsWith(strtolower($setting->hero_video), '.webm');
+  @endphp
+  <header class="vide" id="home">
+    <video class="hero-bg-video" autoplay muted loop playsinline preload="auto"
+           poster="{{ asset('video/video-bg.jpg') }}">
+      @if($setting->hero_video)
+        <source src="{{ asset('storage/'.$setting->hero_video) }}" type="{{ $heroVideoIsWebm ? 'video/webm' : 'video/mp4' }}">
+      @else
+        <source src="{{ asset('video/video-bg.mp4') }}" type="video/mp4">
+        <source src="{{ asset('video/video-bg.webm') }}" type="video/webm">
+        <source src="{{ asset('video/video-bg.ogv') }}" type="video/ogg">
+      @endif
+    </video>
     <div class="container vide_content" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:40px;">
       <div class="hero-text hero-fade-in" style="flex:1 1 320px;align-self:center;max-width:560px;">
         <h2 class="hero-fade-in_item" style="margin:0 0 16px 0;">{{ $setting->hero_title }}</h2>
@@ -963,10 +1036,7 @@
          tombol solid biru, kanan foto full-bleed tanpa rounded corner.
          Tombol mengarah ke halaman "Tentang Asa Production". --}}
     <section class="about-split" id="about">
-      <div class="about-split_col about-split_col--photo wow fadeInLeft" data-wow-duration="0.9s">
-        <img src="{{ $setting->about_image ? asset('storage/'.$setting->about_image) : asset('images/parallax.jpg') }}" alt="{{ $setting->site_title }}"/>
-      </div>
-      <div class="about-split_col about-split_col--text wow fadeInRight" data-wow-delay="0.15s" data-wow-duration="0.9s">
+      <div class="about-split_col about-split_col--text wow fadeInLeft" data-wow-duration="0.9s">
         <div class="about-split_inner">
           <span class="about-split_eyebrow">{{ $setting->about_label ?: 'Who We Are' }}</span>
           <h2 class="about-split_title">{!! nl2br(e($setting->about_title)) !!}</h2>
@@ -977,6 +1047,9 @@
             {{ $setting->about_cta_text ?: 'Pelajari Lebih Lanjut' }}
           </a>
         </div>
+      </div>
+      <div class="about-split_col about-split_col--photo wow fadeInRight" data-wow-delay="0.15s" data-wow-duration="0.9s">
+        <img src="{{ $setting->about_image ? asset('storage/'.$setting->about_image) : asset('images/parallax.jpg') }}" alt="{{ $setting->site_title }}"/>
       </div>
     </section>
 
@@ -1221,15 +1294,11 @@
 
     if (toggle && menu) {
       toggle.addEventListener('click', function () {
-        var open = menu.classList.toggle('is-open');
-        toggle.classList.toggle('is-open', open);
-        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        menu.classList.toggle('is-open');
       });
       menu.querySelectorAll('a').forEach(function (link) {
         link.addEventListener('click', function () {
           menu.classList.remove('is-open');
-          toggle.classList.remove('is-open');
-          toggle.setAttribute('aria-expanded', 'false');
         });
       });
     }
@@ -1253,6 +1322,41 @@
       }
     });
 
+    // ===== Pindahkan tombol ganti bahasa ke dalam dropdown hamburger =====
+    // Di layar mobile (<=991px) #langSwitcher dipindah jadi item terakhir
+    // #navMenu (lewat slot kosong #navLangSlot) supaya jadi bagian dari
+    // dropdown hamburger. Di layar desktop, elemen yang sama dikembalikan
+    // ke posisi semula di .site-nav_utility — jadi tampilan desktop tidak
+    // berubah sama sekali.
+    (function () {
+      var MOBILE_QUERY = '(max-width: 991px)';
+
+      function placeLangSwitcher() {
+        var lang = document.getElementById('langSwitcher');
+        var slot = document.getElementById('navLangSlot');
+        var utility = document.querySelector('.site-nav_utility');
+        if (!lang || !slot || !utility) { return; }
+
+        var isMobile = window.matchMedia(MOBILE_QUERY).matches;
+        if (isMobile) {
+          if (lang.parentElement !== slot) { slot.appendChild(lang); }
+        } else if (lang.parentElement !== utility) {
+          var toggleBtn = document.getElementById('navToggle');
+          utility.insertBefore(lang, toggleBtn || null);
+        }
+      }
+
+      placeLangSwitcher();
+
+      var mq = window.matchMedia(MOBILE_QUERY);
+      if (mq.addEventListener) {
+        mq.addEventListener('change', placeLangSwitcher);
+      } else if (mq.addListener) { // Safari lama
+        mq.addListener(placeLangSwitcher);
+      }
+      window.addEventListener('resize', placeLangSwitcher);
+    })();
+
     if (nav) {
       var hero = document.getElementById('home');
 
@@ -1272,6 +1376,37 @@
 
     var year = document.getElementById('copyright-year');
     if (year) { year.textContent = new Date().getFullYear(); }
+
+    // Fallback: some browsers/embedded previews ignore the autoplay
+    // attribute (or block it entirely inside an iframe without an
+    // "allow=autoplay" permission), so we nudge playback multiple ways.
+    var heroVideo = document.querySelector('.hero-bg-video');
+    if (heroVideo) {
+      heroVideo.muted = true; // some browsers only honor the JS property, not the attribute
+      heroVideo.playsInline = true;
+
+      var tryPlay = function () {
+        var p = heroVideo.play();
+        if (p && typeof p.catch === 'function') { p.catch(function () {}); }
+      };
+
+      ['loadedmetadata', 'loadeddata', 'canplay'].forEach(function (evt) {
+        heroVideo.addEventListener(evt, tryPlay);
+      });
+      tryPlay();
+
+      // Last-resort fallback: if autoplay was blocked by the browser,
+      // the very first tap/scroll/click anywhere on the page resumes it.
+      var resumeOnInteraction = function () {
+        if (heroVideo.paused) { tryPlay(); }
+        ['click', 'touchstart', 'scroll', 'keydown'].forEach(function (evt) {
+          document.removeEventListener(evt, resumeOnInteraction);
+        });
+      };
+      ['click', 'touchstart', 'scroll', 'keydown'].forEach(function (evt) {
+        document.addEventListener(evt, resumeOnInteraction, { once: true, passive: true });
+      });
+    }
   })();
 </script>
 </body>
