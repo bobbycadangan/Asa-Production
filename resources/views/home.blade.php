@@ -7,6 +7,11 @@
   <meta name="format-detection" content="telephone=no"/>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="icon" href="{{ $setting->favicon ? asset('storage/'.$setting->favicon) : asset('images/favicon.ico') }}" type="image/x-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="{{ asset('css/grid.css') }}">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.css') }}"/>
@@ -35,8 +40,10 @@
       font-weight: 400;
       opacity: .9;
     }
-    header.vide .brand_name{
+    header.vide .brand_name,
+    header.vide .brand_name a{
       font-size: clamp(18px, 2.2vw, 22px);
+      font-family: 'League Spartan', sans-serif !important;
     }
     header.vide .brand_slogan{
       font-size: clamp(12px, 1.4vw, 14px);
@@ -73,7 +80,274 @@
       .hero-fade-in_item{ animation: none; opacity: 1; transform: none; }
     }
 
-    /* ===== Navbar running text (marquee) ===== */
+    /* ======================================================================
+       LIQUID GLASS NAVBAR (khas iOS) — dirombak total: tampilan & logic.
+       Di hero (belum discroll): navbar polos, transparan, menempel penuh
+       di tepi atas — persis seperti versi sebelumnya. Begitu halaman
+       discroll (.is-scrolled), navbar bertransformasi jadi kapsul kaca
+       melayang: blur/saturate ala frosted glass, garis highlight tipis di
+       tepi atas (efek pantulan cahaya di kaca), menyusut & mengambang.
+       Semua properti yang berubah antar dua state ini di-transition CSS
+       supaya morph-nya terasa halus/"cair", bukan lompat on/off.
+       ====================================================================== */
+    .site-nav{
+      position: fixed;
+      top: 0;
+      left: 50%;
+      z-index: 1000;
+      width: 100%;
+      transform: translateX(-50%);
+      display: flex;
+      border-radius: 0;
+      background: transparent;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      border: 1px solid transparent;
+      box-shadow: none;
+      transition: top .5s cubic-bezier(.22,1,.36,1), width .5s cubic-bezier(.22,1,.36,1), border-radius .5s cubic-bezier(.22,1,.36,1), transform .45s cubic-bezier(.22,1,.36,1), background .45s ease, backdrop-filter .45s ease, border-color .45s ease, box-shadow .45s ease;
+      will-change: transform;
+    }
+    .site-nav.is-scrolled{
+      top: max(14px, env(safe-area-inset-top));
+      width: min(1180px, calc(100% - 24px));
+      border-radius: 999px;
+      background: rgba(9, 20, 38, .72);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      backdrop-filter: blur(22px) saturate(160%);
+      border-color: rgba(255,255,255,.2);
+      box-shadow:
+        0 10px 34px -10px rgba(0,10,26,.5),
+        inset 0 1px 0 rgba(255,255,255,.28),
+        inset 0 -1px 0 rgba(0,0,0,.12);
+    }
+    .site-nav.nav-liquid--hidden{
+      transform: translateX(-50%) translateY(-140%);
+    }
+    @media (prefers-reduced-motion: reduce){
+      .site-nav{ transition: none; }
+    }
+    /* pantulan cahaya halus di tepi atas kapsul kaca — hanya muncul saat
+       liquid glass aktif (sudah discroll), tidak ada di navbar polos */
+    .site-nav::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,0) 55%);
+      opacity: 0;
+      transition: opacity .4s ease;
+    }
+    .site-nav.is-scrolled::before{
+      opacity: 1;
+    }
+
+    .site-nav_inner{
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      width: 100%;
+      padding: 10px 14px 10px 18px;
+      transition: padding .4s cubic-bezier(.22,1,.36,1);
+    }
+    .site-nav.is-scrolled .site-nav_inner{
+      padding-top: 7px;
+      padding-bottom: 7px;
+    }
+
+    .site-nav_brand{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 0 0 auto;
+      text-decoration: none;
+      transition: transform .2s cubic-bezier(.22,1,.36,1);
+    }
+    .site-nav_brand:active{ transform: scale(.96); }
+    .site-nav_brand img{
+      height: 32px;
+      width: auto;
+      display: block;
+      transition: height .4s cubic-bezier(.22,1,.36,1);
+    }
+    .site-nav.is-scrolled .site-nav_brand img{ height: 28px; }
+    .site-nav_brand span{
+      font-family: 'League Spartan', sans-serif;
+      color: #fff;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: .01em;
+      white-space: nowrap;
+    }
+
+    {{-- Menu tetap flex:1 1 auto supaya mengisi sisa ruang di antara running
+         text promo dan grup kanan (bahasa + tombol WhatsApp), tapi
+         justify-content diganti flex-start (bukan center): marquee sudah
+         mentok di max-width duluan, jadi kalau center yang dipakai, sisa
+         ruang kosong itu numpuk jadi jarak lebar di ANTARA marquee dan
+         "Beranda" — sementara jarak "Asa Production" ke marquee tetap kecil.
+         flex-start bikin "Beranda" nempel sejarak yang sama seperti jarak
+         brand->marquee (simetris), dan sisa ruang lari ke belakang "Info". --}}
+    .site-nav_menu{
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 22px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    {{-- Setiap <li> juga dijadikan flex container sendiri (bukan cuma isinya)
+         supaya link <a> biasa (Home) dan tombol dropdown (<button>) sama-sama
+         dipusatkan oleh <li>-nya, bukan cuma oleh dirinya sendiri — ini yang
+         sebelumnya bikin teks "Home"/"Beranda" terlihat turun sedikit
+         dibanding "Layanan"/"Info", karena <a> & <button> punya model kotak
+         bawaan browser yang berbeda. --}}
+    .site-nav_menu > li{
+      display: flex;
+      align-items: center;
+    }
+    {{-- Item menu biasa (<a>) dan tombol dropdown (<button>) disamakan
+         persis: inline-flex + align-items:center + line-height:1 supaya
+         baseline teks keduanya sejajar, terlepas dari salah satunya
+         punya ikon chevron atau tidak. --}}
+    .site-nav_menu > li > a{
+      display: inline-flex;
+      align-items: center;
+      color: rgba(255,255,255,.92);
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      text-decoration: none;
+      transition: color .2s ease, opacity .2s ease;
+    }
+    .site-nav_menu > li > a:hover{ color: var(--brand-accent, #2E8BFF); }
+    .site-nav_menu > li > a:active{ opacity: .6; }
+
+    .site-nav_cta{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      margin-left: auto;
+      background: linear-gradient(180deg, var(--brand-accent, #2E8BFF), var(--brand-light, #0051B5));
+      color: #fff !important;
+      font-size: 13.5px;
+      line-height: 1;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.25);
+      box-shadow: 0 6px 16px -4px rgba(46,139,255,.55), inset 0 1px 0 rgba(255,255,255,.35);
+      transition: transform .18s cubic-bezier(.22,1,.36,1), box-shadow .18s ease;
+    }
+    .site-nav_cta:hover{ box-shadow: 0 8px 20px -4px rgba(46,139,255,.7), inset 0 1px 0 rgba(255,255,255,.35); }
+    .site-nav_cta:active{ transform: scale(.94); }
+
+    /* Item WhatsApp versi mobile (di dalam dropdown hamburger): tersembunyi
+       secara default, cuma dimunculkan di breakpoint mobile di bawah. */
+    .site-nav_menu > li.site-nav_cta-item{ display: none; }
+    .site-nav_cta-mobile{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: fit-content;
+      max-width: 100%;
+      margin: 6px auto 2px;
+      background: linear-gradient(180deg, var(--brand-accent, #2E8BFF), var(--brand-light, #0051B5));
+      color: #fff !important;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: 0;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.25);
+      box-shadow: 0 6px 16px -4px rgba(46,139,255,.55), inset 0 1px 0 rgba(255,255,255,.35);
+      transition: transform .18s cubic-bezier(.22,1,.36,1), box-shadow .18s ease;
+    }
+    .site-nav_cta-mobile:active{ transform: scale(.94); }
+
+    .site-nav_toggle{
+      display: none;
+      flex: 0 0 auto;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.16);
+      position: relative;
+      cursor: pointer;
+      transition: background .2s ease, transform .18s cubic-bezier(.22,1,.36,1);
+    }
+    .site-nav_toggle:active{ transform: scale(.9); }
+    .site-nav_toggle span{
+      position: absolute;
+      left: 9px;
+      right: 9px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform .3s cubic-bezier(.22,1,.36,1), opacity .2s ease, top .3s cubic-bezier(.22,1,.36,1);
+    }
+    .site-nav_toggle span:nth-child(1){ top: 13px; }
+    .site-nav_toggle span:nth-child(2){ top: 18px; }
+    .site-nav_toggle span:nth-child(3){ top: 23px; }
+    .site-nav_toggle.is-open span:nth-child(1){ top: 18px; transform: rotate(45deg); }
+    .site-nav_toggle.is-open span:nth-child(2){ opacity: 0; }
+    .site-nav_toggle.is-open span:nth-child(3){ top: 18px; transform: rotate(-45deg); }
+
+    @media (max-width: 991px){
+      .site-nav_toggle{ display: block; }
+      /* Tombol WhatsApp dipindah ke dalam dropdown hamburger di mobile:
+         sembunyikan versi navbar-nya, tampilkan versi di dalam menu. */
+      .site-nav_cta{ display: none; }
+      .site-nav_menu > li.site-nav_cta-item{ display: block; }
+      .site-nav_menu{
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0;
+        margin: 0;
+        padding: 8px;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        border-radius: 22px;
+        background: rgba(9,16,32,.7);
+        -webkit-backdrop-filter: blur(22px) saturate(160%);
+        backdrop-filter: blur(22px) saturate(160%);
+        border: 1px solid rgba(255,255,255,.16);
+        box-shadow: 0 16px 40px -12px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.16);
+        transition: max-height .35s cubic-bezier(.22,1,.36,1), opacity .25s ease;
+      }
+      .site-nav_menu.is-open{
+        max-height: 480px;
+        opacity: 1;
+      }
+      .site-nav_menu > li{
+        align-items: stretch;
+      }
+      .site-nav_menu > li > a{
+        display: block;
+        padding: 14px 16px;
+      }
+    }
+
+    /* ===== Navbar running text (marquee) — fade tepi pakai mask, bukan
+       gradasi warna solid, supaya tetap benar di atas kaca transparan ===== */
     .site-nav_marquee{
       flex: 1 1 auto;
       min-width: 0;
@@ -82,24 +356,8 @@
       margin: 0 4px;
       white-space: nowrap;
       position: relative;
-    }
-    .site-nav_marquee::before,
-    .site-nav_marquee::after{
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 20px;
-      z-index: 2;
-      pointer-events: none;
-    }
-    .site-nav_marquee::before{
-      left: 0;
-      background: linear-gradient(to right, rgba(0,20,46,1), rgba(0,20,46,0));
-    }
-    .site-nav_marquee::after{
-      right: 0;
-      background: linear-gradient(to left, rgba(0,20,46,1), rgba(0,20,46,0));
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
     }
     .site-nav_marquee-track{
       display: inline-block;
@@ -328,30 +586,35 @@
         padding: 0 2px 14px;
       }
     }
-    /* ===== Navbar dropdown groups (kreasiai.com style, lebih ringkas) ===== */
+    /* ===== Navbar dropdown groups — kaca melayang, senada dengan navbar ===== */
     .site-nav_menu .has-dropdown{
       position: relative;
     }
     .dropdown-toggle{
       background: none;
       border: none;
-      color: #FFF;
+      color: rgba(255,255,255,.92);
       font-family: inherit;
-      font-size: 15px;
-      font-weight: 500;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      display: flex;
+      letter-spacing: 0.04em;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
       cursor: pointer;
-      padding: 0 0 4px;
+      padding: 0;
     }
     .dropdown-toggle:hover{
       color: var(--brand-accent);
     }
+    .dropdown-toggle:active{
+      opacity: .6;
+    }
     .dropdown-toggle i{
       font-size: 11px;
+      line-height: 1;
       transition: transform .2s ease;
     }
     .has-dropdown:hover .dropdown-toggle i,
@@ -361,18 +624,21 @@
     .dropdown-menu{
       list-style: none;
       margin: 0;
-      padding: 10px 0;
+      padding: 10px;
       position: absolute;
-      top: 100%;
+      top: calc(100% + 12px);
       left: 50%;
       min-width: 190px;
-      background: #0d1f36;
-      border-radius: 10px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      background: rgba(9,16,32,.72);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      backdrop-filter: blur(22px) saturate(160%);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 16px;
+      box-shadow: 0 16px 34px -10px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.16);
       opacity: 0;
       visibility: hidden;
-      transform: translateX(-50%) translateY(8px);
-      transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+      transform: translateX(-50%) translateY(6px) scale(.96);
+      transition: opacity .22s ease, transform .3s cubic-bezier(.22,1,.36,1), visibility .22s ease;
       z-index: 20;
     }
     .dropdown-menu li + li{
@@ -380,26 +646,31 @@
     }
     .dropdown-menu a{
       display: block;
-      padding: 10px 20px;
-      color: #cfd6e2;
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: rgba(255,255,255,.82);
       font-size: 14px;
       font-weight: 400;
       text-transform: none;
       letter-spacing: 0;
       white-space: nowrap;
+      transition: background .18s ease, color .18s ease;
     }
     .dropdown-menu a::after{
       display: none;
     }
     .dropdown-menu a:hover{
-      color: var(--brand-accent);
-      background: rgba(255,255,255,.06);
+      color: #fff;
+      background: rgba(255,255,255,.1);
+    }
+    .dropdown-menu a:active{
+      background: rgba(255,255,255,.18);
     }
     .has-dropdown:hover .dropdown-menu,
     .has-dropdown.is-open .dropdown-menu{
       opacity: 1;
       visibility: visible;
-      transform: translateX(-50%) translateY(0);
+      transform: translateX(-50%) translateY(0) scale(1);
     }
     @media (max-width: 991px){
       .site-nav_menu .has-dropdown{
@@ -407,7 +678,7 @@
       }
       .dropdown-toggle{
         width: 100%;
-        padding: 16px 24px;
+        padding: 14px 8px;
         justify-content: space-between;
       }
       .dropdown-menu{
@@ -416,7 +687,10 @@
         opacity: 1;
         visibility: visible;
         box-shadow: none;
-        background: rgba(255,255,255,.03);
+        background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border: none;
         border-radius: 0;
         padding: 0;
         max-height: 0;
@@ -425,15 +699,13 @@
       }
       .has-dropdown.is-open .dropdown-menu{
         max-height: 300px;
-        /* Tanpa baris ini, transform: translateX(-50%) translateY(0) dari
-           .has-dropdown.is-open .dropdown-menu (versi desktop) menang lewat
-           urutan CSS dan mendorong seluruh submenu (isi teksnya) keluar layar
-           ke kiri saat dibuka di mobile — itu sebabnya teks dropdown terlihat
-           hilang. */
+        /* Tanpa baris ini, transform dari versi desktop menang lewat urutan
+           CSS dan mendorong seluruh submenu keluar layar ke kiri saat dibuka
+           di mobile — itu sebabnya teks dropdown terlihat hilang. */
         transform: none;
       }
       .dropdown-menu a{
-        padding: 14px 40px;
+        padding: 12px 16px;
       }
     }
 
@@ -451,8 +723,8 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.18);
       color: #FFF;
       font-family: inherit;
       text-transform: none;
@@ -460,9 +732,13 @@
       border-radius: 30px;
       cursor: pointer;
       line-height: 1;
+      transition: background .2s ease, transform .18s cubic-bezier(.22,1,.36,1);
     }
     .lang-toggle:hover{
-      background: rgba(255,255,255,.16);
+      background: rgba(255,255,255,.18);
+    }
+    .lang-toggle:active{
+      transform: scale(.93);
     }
     .lang-toggle i{
       font-size: 9px;
@@ -487,11 +763,11 @@
       right: 0;
       min-width: 140px;
       padding: 8px;
-      transform: translateY(8px);
+      transform: translateY(6px) scale(.96);
     }
     #langSwitcher.is-open .dropdown-menu.lang-menu,
     #langSwitcher:hover .dropdown-menu.lang-menu{
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
     .lang-menu li + li{
       margin-top: 4px !important;
@@ -524,6 +800,7 @@
     @media (max-width: 991px){
       .site-nav_utility{
         gap: 10px;
+        margin-left: auto;
       }
       .lang-toggle{
         padding: 5px 8px;
@@ -544,18 +821,20 @@
     }
     @media (max-width: 991px){
       #navLangSlot{
-        border-top: 1px solid rgba(255,255,255,.08);
+        border-top: 1px solid rgba(255,255,255,.1);
+        margin-top: 4px;
+        padding-top: 4px;
       }
       #navLangSlot .lang-toggle{
         width: 100%;
         background: none;
         border: none;
-        border-radius: 0;
-        padding: 16px 24px;
+        border-radius: 10px;
+        padding: 12px 16px;
         justify-content: space-between;
       }
       #navLangSlot .lang-toggle:hover{
-        background: rgba(255,255,255,.06);
+        background: rgba(255,255,255,.08);
       }
       #langSwitcher .dropdown-menu.lang-menu{
         position: static;
@@ -566,7 +845,10 @@
         width: 100%;
         padding: 0;
         box-shadow: none;
-        background: rgba(255,255,255,.03);
+        background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border: none;
         border-radius: 0;
         max-height: 0;
         overflow: hidden;
@@ -704,9 +986,15 @@
 </head>
 
 <body>
-<div class="page">
-  {{-- ======================== NAVBAR ======================== --}}
-  <nav class="site-nav" id="site-nav">
+{{-- ======================== NAVBAR ======================== --}}
+{{-- Sengaja diletakkan sebagai sibling langsung dari <body> (di LUAR
+     div.page), bukan di dalamnya. Kalau nav ada di dalam elemen yang
+     punya transform/filter/perspective di CSS lain (mis. untuk animasi
+     transisi halaman), position:fixed pada nav akan jadi relatif ke
+     elemen itu alih-alih ke viewport — akibatnya navbar ikut ke-scroll,
+     bukan diam. Menaruhnya di luar div.page menghindari masalah ini
+     sama sekali, apa pun isi CSS ancestor-nya. --}}
+<nav class="site-nav" id="site-nav">
     <div class="container site-nav_inner">
       <a href="#" class="site-nav_brand">
         <img src="{{ $setting->logo ? asset('storage/'.$setting->logo) : asset('images/logo.png') }}" alt="{{ $setting->site_title }}"/>
@@ -742,6 +1030,19 @@
              tampilan mobile, supaya ganti bahasa jadi bagian dari dropdown
              hamburger. Kosong = tersembunyi otomatis (di desktop). --}}
         <li class="site-nav_lang-item" id="navLangSlot"></li>
+        {{-- Tombol WhatsApp versi mobile: item ini hanya tampil di dalam
+             dropdown hamburger (≤991px). Tombol WhatsApp asli di
+             .site-nav_utility disembunyikan di lebar itu supaya navbar
+             mobile lebih ringkas — lihat @media (max-width: 991px) di atas. --}}
+        <li class="site-nav_cta-item">
+          <a href="https://wa.me/{{ $setting->whatsapp_number }}?text={{ urlencode($setting->whatsapp_message) }}"
+             target="_blank" rel="noopener" class="site-nav_cta-mobile">
+            <svg viewBox="0 0 32 32" width="18" height="18" fill="currentColor" style="flex-shrink:0;">
+              <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.906 6.475L4 29l7.72-1.867A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.108 1.127-4.47-.233-.367A9.78 9.78 0 0 1 6.182 15c0-5.415 4.404-9.818 9.819-9.818S25.818 9.585 25.818 15 21.415 24.818 16.001 24.818zm5.396-7.34c-.296-.148-1.75-.864-2.021-.963-.271-.099-.469-.148-.667.148-.198.296-.766.963-.939 1.161-.173.198-.346.222-.642.074-.296-.148-1.249-.46-2.379-1.467-.879-.784-1.472-1.753-1.645-2.049-.173-.296-.018-.456.13-.604.134-.133.296-.346.444-.519.148-.173.198-.297.296-.494.099-.198.05-.371-.025-.519-.074-.148-.667-1.607-.914-2.202-.24-.577-.485-.499-.667-.508l-.568-.01c-.198 0-.519.074-.79.371-.271.297-1.037 1.014-1.037 2.472s1.062 2.868 1.21 3.066c.148.198 2.089 3.19 5.062 4.474.707.305 1.259.487 1.689.623.71.226 1.355.194 1.866.118.569-.085 1.75-.716 1.997-1.407.247-.692.247-1.284.173-1.407-.074-.123-.271-.198-.568-.346z"/>
+            </svg>
+            <span>WhatsApp</span>
+          </a>
+        </li>
       </ul>
 
       <div class="site-nav_utility">
@@ -785,15 +1086,16 @@
       </div>
 
       <a href="https://wa.me/{{ $setting->whatsapp_number }}?text={{ urlencode($setting->whatsapp_message) }}"
-         target="_blank" rel="noopener" class="site-nav_cta" style="display:inline-flex;align-items:center;gap:8px;">
+         target="_blank" rel="noopener" class="site-nav_cta">
         <svg viewBox="0 0 32 32" width="18" height="18" fill="currentColor" style="flex-shrink:0;">
           <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.906 6.475L4 29l7.72-1.867A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.108 1.127-4.47-.233-.367A9.78 9.78 0 0 1 6.182 15c0-5.415 4.404-9.818 9.819-9.818S25.818 9.585 25.818 15 21.415 24.818 16.001 24.818zm5.396-7.34c-.296-.148-1.75-.864-2.021-.963-.271-.099-.469-.148-.667.148-.198.296-.766.963-.939 1.161-.173.198-.346.222-.642.074-.296-.148-1.249-.46-2.379-1.467-.879-.784-1.472-1.753-1.645-2.049-.173-.296-.018-.456.13-.604.134-.133.296-.346.444-.519.148-.173.198-.297.296-.494.099-.198.05-.371-.025-.519-.074-.148-.667-1.607-.914-2.202-.24-.577-.485-.499-.667-.508l-.568-.01c-.198 0-.519.074-.79.371-.271.297-1.037 1.014-1.037 2.472s1.062 2.868 1.21 3.066c.148.198 2.089 3.19 5.062 4.474.707.305 1.259.487 1.689.623.71.226 1.355.194 1.866.118.569-.085 1.75-.716 1.997-1.407.247-.692.247-1.284.173-1.407-.074-.123-.271-.198-.568-.346z"/>
         </svg>
         WhatsApp
       </a>
     </div>
-  </nav>
+</nav>
 
+<div class="page">
   {{-- ======================== HEADER ======================== --}}
   @php
     $heroVideoIsWebm = $setting->hero_video && \Illuminate\Support\Str::endsWith(strtolower($setting->hero_video), '.webm');
@@ -1237,21 +1539,35 @@
       window.addEventListener('resize', placeLangSwitcher);
     })();
 
+    // ===== Liquid glass navbar: di hero navbar polos (transparan, flush
+    // di atas); begitu discroll melewati SCROLL_THRESHOLD, class
+    // 'is-scrolled' memicu morph ke kapsul liquid glass — transisinya
+    // ditangani CSS (lihat blok <style> di atas), di sini cukup toggle
+    // class-nya. Navbar SELALU tetap terlihat (tidak pernah disembunyikan
+    // lewat translateY) baik scroll ke bawah maupun ke atas — sebelumnya
+    // ada logic auto-hide yang membuat navbar hilang total dari layar
+    // saat scroll ke bawah. =====
     if (nav) {
-      var hero = document.getElementById('home');
+      var SCROLL_THRESHOLD = 24;    // px — batas mulai berubah dari polos ke liquid glass
+      var ticking = false;
 
-      function updateNavBackground() {
-        var threshold = hero ? (hero.offsetTop + hero.offsetHeight - nav.offsetHeight) : 20;
-        if (window.scrollY >= threshold) {
-          nav.classList.add('is-scrolled');
-        } else {
-          nav.classList.remove('is-scrolled');
+      function applyNavLiquidState() {
+        var y = window.scrollY;
+        nav.classList.toggle('is-scrolled', y >= SCROLL_THRESHOLD);
+        nav.classList.remove('nav-liquid--hidden');
+        ticking = false;
+      }
+
+      function requestNavUpdate() {
+        if (!ticking) {
+          window.requestAnimationFrame(applyNavLiquidState);
+          ticking = true;
         }
       }
 
-      window.addEventListener('scroll', updateNavBackground);
-      window.addEventListener('resize', updateNavBackground);
-      updateNavBackground();
+      window.addEventListener('scroll', requestNavUpdate, { passive: true });
+      window.addEventListener('resize', requestNavUpdate);
+      applyNavLiquidState();
     }
 
     var year = document.getElementById('copyright-year');

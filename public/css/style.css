@@ -1102,203 +1102,18 @@ footer * + .copyright {
 }
 
 /*========================================================
-                      Site Navbar
+                      Site Navbar (LEGACY - DIHAPUS)
+   Blok navbar lama (.site-nav, .site-nav_brand, .site-nav_menu, dst)
+   yang tadinya ada di sini sudah dihapus. Selector-nya sama persis
+   dengan navbar "liquid glass" yang sekarang didefinisikan langsung
+   di resources/views/partials/site-nav.blade.php (dan salinannya di
+   home.blade.php untuk landing page) — dua definisi berbeda dengan
+   selector sama ini saling bentrok lewat CSS cascade tergantung
+   urutan file di-load per halaman, menyebabkan alignment & font
+   navbar tampil tidak konsisten/berantakan. Style navbar sekarang
+   HANYA boleh diedit di kedua file blade tersebut, bukan di sini.
 =========================================================*/
-.site-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  background: transparent;
-  transition: background 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease;
-}
-.site-nav.is-scrolled {
-  background: rgba(0, 20, 46, 0.97);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
-}
-.site-nav_inner {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 14px 0;
-  width: 100%;
-  box-sizing: border-box;
-}
-.site-nav_brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #FFF;
-  font-size: 19px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  flex: 1 1 auto;
-  min-width: 0;
-  white-space: nowrap;
-}
-.site-nav_brand span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-}
-.site-nav_brand:hover {
-  color: var(--brand-accent);
-}
-.site-nav_brand img {
-  width: 42px;
-  height: 42px;
-  max-width: 42px;
-  flex-shrink: 0;
-}
-.site-nav_menu {
-  display: flex;
-  align-items: center;
-  gap: 34px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  flex: 0 0 auto;
-  white-space: nowrap;
-}
-.site-nav_menu a {
-  display: flex;
-  align-items: center;
-  color: #FFF;
-  font-size: 15px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  position: relative;
-  padding-bottom: 4px;
-  white-space: nowrap;
-}
-.site-nav_menu a:hover {
-  color: var(--brand-accent);
-}
-.site-nav_menu a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0;
-  height: 2px;
-  background: var(--brand-accent);
-  transition: width 0.25s ease;
-}
-.site-nav_menu a:hover::after {
-  width: 100%;
-}
-.site-nav_cta {
-  background: linear-gradient(135deg, var(--brand-light), var(--brand-dark));
-  color: #FFF;
-  padding: 8px 18px;
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-radius: 30px;
-  box-shadow: 0 4px 14px rgba(0, 34, 76, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  flex: 0 0 auto;
-  white-space: nowrap;
-}
-.site-nav_cta:hover {
-  color: #FFF;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 34, 76, 0.45);
-}
-.site-nav_toggle {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  padding: 6px;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-.site-nav_toggle span {
-  display: block;
-  width: 26px;
-  height: 2px;
-  background: #FFF;
-  transition: transform 0.3s ease, opacity 0.2s ease;
-}
-.site-nav_toggle.is-open span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-.site-nav_toggle.is-open span:nth-child(2) {
-  opacity: 0;
-}
-.site-nav_toggle.is-open span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-@media (max-width: 991px) {
-  .site-nav_menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-    background: rgba(0, 20, 46, 0.98);
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-  }
-  .site-nav_menu.is-open {
-    max-height: calc(100vh - 70px);
-    overflow-y: auto;
-  }
-  .site-nav_menu li {
-    width: 100%;
-  }
-  .site-nav_menu a {
-    display: block;
-    padding: 16px 24px;
-    width: 100%;
-  }
-  .site-nav_menu a::after {
-    display: none;
-  }
-  .site-nav_toggle {
-    display: flex;
-  }
-  .site-nav_cta {
-    display: none !important;
-  }
-}
-@media (max-width: 480px) {
-  .site-nav_inner {
-    gap: 10px;
-    padding: 12px 0;
-  }
-  .site-nav_brand {
-    font-size: clamp(11px, 4vw, 15px);
-    gap: 8px;
-  }
-  .site-nav_brand img {
-    width: 32px;
-    height: 32px;
-    max-width: 32px;
-  }
-  .site-nav_brand span {
-    max-width: none;
-    overflow: visible;
-    text-overflow: clip;
-    white-space: nowrap;
-  }
-  .site-nav_utility {
-    flex-shrink: 0;
-  }
-}
+
 
 /*========================================================
                       Testimonials (redesign)
@@ -1610,6 +1425,7 @@ footer * + .copyright {
   align-items: center;
   gap: 10px;
   color: #FFF;
+  font-family: 'League Spartan', sans-serif;
   font-size: 18px;
   font-weight: 700;
   text-transform: uppercase;

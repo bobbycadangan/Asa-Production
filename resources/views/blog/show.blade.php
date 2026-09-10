@@ -15,6 +15,9 @@
   <meta property="og:image" content="{{ asset('storage/'.$post->thumbnail) }}">
   @endif
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="{{ $setting->favicon ? asset('storage/'.$setting->favicon) : asset('images/favicon.ico') }}" type="image/x-icon">
 
   {{-- Stylesheet yang sama dengan landing page, agar warna, font (Ubuntu) dan komponen (navbar, tombol, footer) konsisten --}}

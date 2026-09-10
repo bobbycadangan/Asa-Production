@@ -8,6 +8,9 @@
   <title>Kontak - {{ $setting->site_title ?? 'Asa Production' }}</title>
   <meta name="description" content="Hubungi {{ $setting->site_title ?? 'Asa Production' }} untuk konsultasi jasa pembuatan website, aplikasi, dan sistem custom untuk bisnis Anda.">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="{{ $setting->favicon ? asset('storage/'.$setting->favicon) : asset('images/favicon.ico') }}" type="image/x-icon">
 
   {{-- Stylesheet yang sama dengan landing page & halaman lain, agar warna, font, dan komponen (navbar, tombol, footer) konsisten --}}
