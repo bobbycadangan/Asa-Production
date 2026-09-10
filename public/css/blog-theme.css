@@ -27,125 +27,14 @@ body.blog-body{
 }
 
 /*========================================================
-  Footer columns (sama seperti landing page)
+  Footer columns — dipindah ke public/css/style.css supaya satu
+  sumber untuk semua halaman. Dulu ada salinan di sini yang beda
+  dikit (max-width 260px, tanpa aturan sembunyikan kolom Layanan/
+  Perusahaan di mobile) dan karena file ini dimuat SETELAH style.css
+  di <head>, salinan lama ini selalu menang dan bikin perubahan di
+  style.css kelihatan "tidak ngaruh". Jangan tambah CSS footer di
+  sini lagi — edit di style.css.
 =========================================================*/
-.footer-columns{
-  background: #00142E;
-  padding: 60px 0 40px;
-  border-top: 1px solid rgba(255,255,255,.08);
-}
-.footer-col{
-  margin-bottom: 30px;
-}
-.footer-col.footer-col--brand p{
-  max-width: 260px;
-}
-.footer-col h4{
-  color: #FFF;
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin: 0 0 18px 0;
-}
-.footer-brand{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #FFF;
-  font-size: 18px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
-}
-.footer-brand:hover{
-  color: var(--brand-accent);
-}
-.footer-brand img{
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-.footer-col > p{
-  color: #9aa5b5;
-  font-size: 14px;
-  line-height: 22px;
-  margin: 0 0 8px 0;
-}
-.footer-col > p strong{
-  color: #cfd6e2;
-}
-.footer-links{
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.footer-links li + li{
-  margin-top: 12px;
-}
-.footer-links a{
-  color: #9aa5b5;
-  font-size: 14px;
-  transition: color .2s ease;
-}
-.footer-links a:hover{
-  color: #FFF;
-}
-.footer-badges{
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 14px;
-}
-.footer-badges img{
-  max-height: 30px;
-  width: auto;
-}
-.footer-social{
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 8px;
-}
-.footer-social a{
-  width: 34px;
-  height: 34px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: rgba(255,255,255,.08);
-  color: #FFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px;
-  transition: background .2s ease, transform .2s ease;
-}
-.footer-social a:hover{
-  background: var(--brand-accent);
-  transform: translateY(-2px);
-}
-.well5{
-  border-top: 1px solid rgba(255,255,255,.08);
-}
-.well5 .copyright{
-  margin-top: 14px;
-}
-@media (max-width: 767px){
-  .footer-columns{
-    padding: 40px 0 20px;
-  }
-  .footer-col{
-    text-align: center;
-  }
-  .footer-brand{
-    justify-content: center;
-  }
-  .footer-social{
-    justify-content: center;
-  }
-}
 
 /*========================================================
   Blog index — masthead

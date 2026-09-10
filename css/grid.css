@@ -419,7 +419,7 @@ table {
 @media (max-width: 767px) {
   .container, .container-fluid {
     width: 100%;
-    max-width: 420px;
+    max-width: 100%;
     padding: 0 20px;
   }
 

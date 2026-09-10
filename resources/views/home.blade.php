@@ -257,126 +257,7 @@
     }
     @endif
 
-    /* ===== Footer columns (kreasiai.com style) ===== */
-    .footer-columns{
-      background: #00142E;
-      padding: 60px 0 40px;
-      border-top: 1px solid rgba(255,255,255,.08);
-    }
-    .footer-col{
-      margin-bottom: 30px;
-    }
-    .footer-col.footer-col--brand p{
-      max-width: 240px;
-    }
-    .footer-col h4{
-      color: #FFF;
-      font-size: 14px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin: 0 0 18px 0;
-    }
-    .footer-brand{
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #FFF;
-      font-size: 18px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 12px;
-    }
-    .footer-brand:hover{
-      color: var(--brand-accent);
-    }
-    .footer-brand img{
-      width: 36px;
-      height: 36px;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
-    .footer-col > p{
-      color: #9aa5b5;
-      font-size: 14px;
-      line-height: 22px;
-      margin: 0 0 8px 0;
-    }
-    .footer-col > p strong{
-      color: #cfd6e2;
-    }
-    .footer-links{
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-    .footer-links li + li{
-      margin-top: 12px;
-    }
-    .footer-links a{
-      color: #9aa5b5;
-      font-size: 14px;
-      transition: color .2s ease;
-    }
-    .footer-links a:hover{
-      color: #FFF;
-    }
-    .footer-social{
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 8px;
-    }
-    .footer-badges{
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 14px;
-    }
-    .footer-badges img{
-      max-height: 30px;
-      width: auto;
-    }
-    .footer-social a{
-      width: 34px;
-      height: 34px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      background: rgba(255,255,255,.08);
-      color: #FFF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      transition: background .2s ease, transform .2s ease;
-    }
-    .footer-social a:hover{
-      background: var(--brand-accent);
-      transform: translateY(-2px);
-    }
-    .well5{
-      border-top: 1px solid rgba(255,255,255,.08);
-    }
-    .well5 .copyright{
-      margin-top: 14px;
-    }
-    @media (max-width: 767px){
-      .footer-columns{
-        padding: 40px 0 20px;
-      }
-      .footer-col{
-        text-align: center;
-      }
-      .footer-brand{
-        justify-content: center;
-      }
-      .footer-badges{
-        justify-content: center;
-      }
-      .footer-social{
-        justify-content: center;
-      }
-    }
+    /* Footer columns dipindah ke public/css/style.css (dipakai bersama semua halaman) */
 
     /* ===== FAQ list, 2 kolom (kreasiai.com style) ===== */
     .faq-section .container.center + .container{
@@ -1036,7 +917,10 @@
          tombol solid biru, kanan foto full-bleed tanpa rounded corner.
          Tombol mengarah ke halaman "Tentang Asa Production". --}}
     <section class="about-split" id="about">
-      <div class="about-split_col about-split_col--text wow fadeInLeft" data-wow-duration="0.9s">
+      <div class="about-split_col about-split_col--photo wow fadeInLeft" data-wow-duration="0.9s">
+        <img src="{{ $setting->about_image ? asset('storage/'.$setting->about_image) : asset('images/parallax.jpg') }}" alt="{{ $setting->site_title }}"/>
+      </div>
+      <div class="about-split_col about-split_col--text wow fadeInRight" data-wow-delay="0.15s" data-wow-duration="0.9s">
         <div class="about-split_inner">
           <span class="about-split_eyebrow">{{ $setting->about_label ?: 'Who We Are' }}</span>
           <h2 class="about-split_title">{!! nl2br(e($setting->about_title)) !!}</h2>
@@ -1047,9 +931,6 @@
             {{ $setting->about_cta_text ?: 'Pelajari Lebih Lanjut' }}
           </a>
         </div>
-      </div>
-      <div class="about-split_col about-split_col--photo wow fadeInRight" data-wow-delay="0.15s" data-wow-duration="0.9s">
-        <img src="{{ $setting->about_image ? asset('storage/'.$setting->about_image) : asset('images/parallax.jpg') }}" alt="{{ $setting->site_title }}"/>
       </div>
     </section>
 
@@ -1201,21 +1082,18 @@
             @endif
           </div>
 
-          <div class="grid_2 footer-col">
+          <div class="grid_2 footer-col footer-col--nav">
             <h4 data-i18n="footer.navTitle">Navigasi</h4>
             <ul class="footer-links">
-              <li><a href="#home" data-i18n="footer.home">Home</a></li>
-              <li><a href="#about" data-i18n="footer.about">Tentang</a></li>
-              <li><a href="#services" data-i18n="footer.services">Layanan</a></li>
-              <li><a href="#gallery" data-i18n="footer.portfolio">Portofolio</a></li>
-              <li><a href="{{ route('blog.index') }}">Blog</a></li>
-              <li><a href="#faq" data-i18n="footer.faq">FAQ</a></li>
-              <li><a href="{{ route('contact') }}" data-i18n="footer.contact">Kontak</a></li>
+              <li><a href="{{ route('blog.index') }}" data-i18n="nav.blog">Blog</a></li>
+              <li><a href="{{ route('portfolio.index') }}" data-i18n="nav.portfolio">Portofolio</a></li>
+              <li><a href="{{ route('about') }}" data-i18n="nav.about">Tentang Kami</a></li>
+              <li><a href="{{ route('contact') }}" data-i18n="nav.contact">Kontak</a></li>
             </ul>
           </div>
 
           @if($services->count())
-          <div class="grid_2 footer-col">
+          <div class="grid_2 footer-col footer-col--services">
             <h4 data-i18n="footer.servicesTitle">Layanan</h4>
             <ul class="footer-links">
               @foreach($services->take(6) as $service)
@@ -1225,7 +1103,7 @@
           </div>
           @endif
 
-          <div class="grid_2 footer-col">
+          <div class="grid_2 footer-col footer-col--company">
             <h4 data-i18n="footer.companyTitle">Perusahaan</h4>
             <ul class="footer-links">
               <li><a href="#about" data-i18n="footer.aboutUs">Tentang Kami</a></li>
@@ -1295,10 +1173,12 @@
     if (toggle && menu) {
       toggle.addEventListener('click', function () {
         menu.classList.toggle('is-open');
+        toggle.classList.toggle('is-open');
       });
       menu.querySelectorAll('a').forEach(function (link) {
         link.addEventListener('click', function () {
           menu.classList.remove('is-open');
+          toggle.classList.remove('is-open');
         });
       });
     }

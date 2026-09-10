@@ -37,21 +37,19 @@
           @endif
         </div>
 
-        <div class="grid_2 footer-col">
+        <div class="grid_2 footer-col footer-col--nav">
           <h4 data-i18n="footer.navTitle">Navigasi</h4>
           <ul class="footer-links">
-            <li><a href="{{ route('home') }}#home" data-i18n="footer.home">Home</a></li>
-            <li><a href="{{ route('about') }}" data-i18n="footer.about">Tentang</a></li>
-            <li><a href="{{ route('home') }}#services" data-i18n="footer.services">Layanan</a></li>
-            <li><a href="{{ route('portfolio.index') }}" data-i18n="footer.portfolio">Portofolio</a></li>
-            <li><a href="{{ route('blog.index') }}" data-i18n="footer.blog">Blog</a></li>
-            <li><a href="{{ route('home') }}#faq" data-i18n="footer.faq">FAQ</a></li>
-            <li><a href="{{ route('contact') }}" data-i18n="footer.contact">Kontak</a></li>
+            <li><a href="{{ route('blog.index') }}" data-i18n="nav.blog">Blog</a></li>
+            <li><a href="{{ route('portfolio.index') }}" data-i18n="nav.portfolio">Portofolio</a></li>
+            <li><a href="{{ route('about') }}" data-i18n="nav.about">Tentang Kami</a></li>
+            <li><a href="{{ route('contact') }}" data-i18n="nav.contact">Kontak</a></li>
           </ul>
         </div>
 
+
         @if($services->count())
-        <div class="grid_2 footer-col">
+        <div class="grid_2 footer-col footer-col--services">
           <h4 data-i18n="footer.servicesTitle">Layanan</h4>
           <ul class="footer-links">
             @foreach($services->take(6) as $service)
@@ -61,7 +59,7 @@
         </div>
         @endif
 
-        <div class="grid_2 footer-col">
+        <div class="grid_2 footer-col footer-col--company">
           <h4 data-i18n="footer.companyTitle">Perusahaan</h4>
           <ul class="footer-links">
             <li><a href="{{ route('about') }}" data-i18n="footer.aboutUs">Tentang Kami</a></li>
