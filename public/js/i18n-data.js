@@ -20,7 +20,7 @@ window.SITE_I18N = {
     'nav.toggleLabel': 'Buka menu',
 
     // ---- Home: hero ----
-    'hero.ctaWhatsapp': 'Chat via WhatsApp',
+    'hero.ctaWhatsapp': 'Hubungi Kami',
 
     // ---- Home: about section ----
     'about.label': 'Tentang Kami',

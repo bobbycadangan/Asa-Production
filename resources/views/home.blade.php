@@ -33,6 +33,7 @@
       font-size: clamp(24px, 4vw, 40px);
       line-height: 1.25;
       font-weight: 700;
+      font-family: 'League Spartan', sans-serif !important;
     }
     header.vide .hero-text h3{
       font-size: clamp(15px, 2vw, 18px);
@@ -48,6 +49,17 @@
     header.vide .brand_slogan{
       font-size: clamp(12px, 1.4vw, 14px);
       opacity: .85;
+    }
+
+    /* ===== Footer brand font: samakan dengan navbar (League Spartan) =====
+       Selector dibuat lebih spesifik (footer#contact ...) supaya menang
+       lawan aturan font di style.css tema, yang kemungkinan pakai
+       selector ber-ID juga. text-transform:none dipaksa juga karena
+       tema aslinya bikin teks ini jadi KAPITAL SEMUA ("ASA PRODUCTION"),
+       padahal navbar tampil normal ("Asa Production"). */
+    footer#contact .footer-brand span{
+      font-family: 'League Spartan', sans-serif !important;
+      text-transform: none !important;
     }
 
     /* ===== Subtle hover micro-interactions ===== */
@@ -182,14 +194,12 @@
       white-space: nowrap;
     }
 
-    {{-- Menu tetap flex:1 1 auto supaya mengisi sisa ruang di antara running
-         text promo dan grup kanan (bahasa + tombol WhatsApp), tapi
-         justify-content diganti flex-start (bukan center): marquee sudah
-         mentok di max-width duluan, jadi kalau center yang dipakai, sisa
-         ruang kosong itu numpuk jadi jarak lebar di ANTARA marquee dan
-         "Beranda" — sementara jarak "Asa Production" ke marquee tetap kecil.
-         flex-start bikin "Beranda" nempel sejarak yang sama seperti jarak
-         brand->marquee (simetris), dan sisa ruang lari ke belakang "Info". --}}
+    {{-- Menu diubah dari flex:1 1 auto ke flex:0 0 auto (permintaan user):
+         supaya menu (Beranda/Layanan/Info) nggak ikut "menggelembung"
+         mengisi sisa ruang, melainkan nempel rapat di sebelah kiri
+         bahasa+tombol WhatsApp. Sisa ruang kosong sekarang full diserap
+         oleh .site-nav_marquee (teks berjalan) di sebelahnya, jadi
+         marquee-nya otomatis jadi lebih lebar juga. --}}
     .site-nav_menu{
       display: flex;
       align-items: center;
@@ -198,7 +208,7 @@
       list-style: none;
       margin: 0;
       padding: 0;
-      flex: 1 1 auto;
+      flex: 0 0 auto;
       min-width: 0;
     }
     {{-- Setiap <li> juga dijadikan flex container sendiri (bukan cuma isinya)
@@ -260,7 +270,7 @@
       gap: 8px;
       width: fit-content;
       max-width: 100%;
-      margin: 6px auto 2px;
+      margin: 2px auto 2px;
       background: linear-gradient(180deg, var(--brand-accent, #2E8BFF), var(--brand-light, #0051B5));
       color: #fff !important;
       font-size: 14px;
@@ -310,7 +320,12 @@
       /* Tombol WhatsApp dipindah ke dalam dropdown hamburger di mobile:
          sembunyikan versi navbar-nya, tampilkan versi di dalam menu. */
       .site-nav_cta{ display: none; }
-      .site-nav_menu > li.site-nav_cta-item{ display: block; }
+      .site-nav_menu > li.site-nav_cta-item{
+        display: block;
+        margin-top: 6px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(255,255,255,.1);
+      }
       .site-nav_menu{
         position: absolute;
         top: calc(100% + 10px);
@@ -321,7 +336,7 @@
         justify-content: flex-start;
         gap: 0;
         margin: 0;
-        padding: 8px;
+        padding: 10px;
         max-height: 0;
         overflow: hidden;
         opacity: 0;
@@ -334,15 +349,26 @@
         transition: max-height .35s cubic-bezier(.22,1,.36,1), opacity .25s ease;
       }
       .site-nav_menu.is-open{
-        max-height: 480px;
+        max-height: 520px;
         opacity: 1;
       }
       .site-nav_menu > li{
         align-items: stretch;
       }
+      {{-- Garis pemisah tipis antara Beranda / Layanan / Info supaya baris-baris
+           menu nggak terasa menempel satu sama lain (rapi & mudah dipindai). --}}
+      .site-nav_menu > li:nth-child(2),
+      .site-nav_menu > li:nth-child(3){
+        border-top: 1px solid rgba(255,255,255,.08);
+      }
       .site-nav_menu > li > a{
         display: block;
         padding: 14px 16px;
+        border-radius: 14px;
+        transition: background .18s ease, color .18s ease;
+      }
+      .site-nav_menu > li > a:active{
+        background: rgba(255,255,255,.08);
       }
     }
 
@@ -352,7 +378,7 @@
       flex: 1 1 auto;
       min-width: 0;
       overflow: hidden;
-      max-width: 260px;
+      max-width: 480px;
       margin: 0 4px;
       white-space: nowrap;
       position: relative;
@@ -678,8 +704,13 @@
       }
       .dropdown-toggle{
         width: 100%;
-        padding: 14px 8px;
+        padding: 14px 16px;
+        border-radius: 14px;
         justify-content: space-between;
+        transition: background .18s ease;
+      }
+      .dropdown-toggle:active{
+        background: rgba(255,255,255,.08);
       }
       .dropdown-menu{
         position: static;
@@ -703,9 +734,18 @@
            CSS dan mendorong seluruh submenu keluar layar ke kiri saat dibuka
            di mobile — itu sebabnya teks dropdown terlihat hilang. */
         transform: none;
+        /* Panel kecil di dalam panel besar: latar & indent tipis supaya
+           sub-item (mis. daftar layanan) terlihat jelas sebagai "anak" dari
+           tombol Layanan/Info, bukan sejajar dengan menu utama. */
+        background: rgba(255,255,255,.04);
+        border-radius: 12px;
+        margin: 2px 0 6px;
+        padding: 4px;
       }
       .dropdown-menu a{
-        padding: 12px 16px;
+        padding: 11px 14px 11px 26px;
+        font-size: 13.5px;
+        border-radius: 10px;
       }
     }
 
@@ -822,14 +862,14 @@
     @media (max-width: 991px){
       #navLangSlot{
         border-top: 1px solid rgba(255,255,255,.1);
-        margin-top: 4px;
-        padding-top: 4px;
+        margin-top: 6px;
+        padding-top: 8px;
       }
       #navLangSlot .lang-toggle{
         width: 100%;
         background: none;
         border: none;
-        border-radius: 10px;
+        border-radius: 14px;
         padding: 12px 16px;
         justify-content: space-between;
       }
@@ -1040,7 +1080,7 @@
             <svg viewBox="0 0 32 32" width="18" height="18" fill="currentColor" style="flex-shrink:0;">
               <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.906 6.475L4 29l7.72-1.867A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.108 1.127-4.47-.233-.367A9.78 9.78 0 0 1 6.182 15c0-5.415 4.404-9.818 9.819-9.818S25.818 9.585 25.818 15 21.415 24.818 16.001 24.818zm5.396-7.34c-.296-.148-1.75-.864-2.021-.963-.271-.099-.469-.148-.667.148-.198.296-.766.963-.939 1.161-.173.198-.346.222-.642.074-.296-.148-1.249-.46-2.379-1.467-.879-.784-1.472-1.753-1.645-2.049-.173-.296-.018-.456.13-.604.134-.133.296-.346.444-.519.148-.173.198-.297.296-.494.099-.198.05-.371-.025-.519-.074-.148-.667-1.607-.914-2.202-.24-.577-.485-.499-.667-.508l-.568-.01c-.198 0-.519.074-.79.371-.271.297-1.037 1.014-1.037 2.472s1.062 2.868 1.21 3.066c.148.198 2.089 3.19 5.062 4.474.707.305 1.259.487 1.689.623.71.226 1.355.194 1.866.118.569-.085 1.75-.716 1.997-1.407.247-.692.247-1.284.173-1.407-.074-.123-.271-.198-.568-.346z"/>
             </svg>
-            <span>WhatsApp</span>
+            <span>WhatsApp Kami</span>
           </a>
         </li>
       </ul>
@@ -1090,7 +1130,7 @@
         <svg viewBox="0 0 32 32" width="18" height="18" fill="currentColor" style="flex-shrink:0;">
           <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.906 6.475L4 29l7.72-1.867A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.108 1.127-4.47-.233-.367A9.78 9.78 0 0 1 6.182 15c0-5.415 4.404-9.818 9.819-9.818S25.818 9.585 25.818 15 21.415 24.818 16.001 24.818zm5.396-7.34c-.296-.148-1.75-.864-2.021-.963-.271-.099-.469-.148-.667.148-.198.296-.766.963-.939 1.161-.173.198-.346.222-.642.074-.296-.148-1.249-.46-2.379-1.467-.879-.784-1.472-1.753-1.645-2.049-.173-.296-.018-.456.13-.604.134-.133.296-.346.444-.519.148-.173.198-.297.296-.494.099-.198.05-.371-.025-.519-.074-.148-.667-1.607-.914-2.202-.24-.577-.485-.499-.667-.508l-.568-.01c-.198 0-.519.074-.79.371-.271.297-1.037 1.014-1.037 2.472s1.062 2.868 1.21 3.066c.148.198 2.089 3.19 5.062 4.474.707.305 1.259.487 1.689.623.71.226 1.355.194 1.866.118.569-.085 1.75-.716 1.997-1.407.247-.692.247-1.284.173-1.407-.074-.123-.271-.198-.568-.346z"/>
         </svg>
-        WhatsApp
+        WhatsApp Kami
       </a>
     </div>
 </nav>
@@ -1121,7 +1161,7 @@
           <svg viewBox="0 0 32 32" width="30" height="30" fill="currentColor" style="vertical-align:middle;flex-shrink:0;">
             <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.906 6.475L4 29l7.72-1.867A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.108 1.127-4.47-.233-.367A9.78 9.78 0 0 1 6.182 15c0-5.415 4.404-9.818 9.819-9.818S25.818 9.585 25.818 15 21.415 24.818 16.001 24.818zm5.396-7.34c-.296-.148-1.75-.864-2.021-.963-.271-.099-.469-.148-.667.148-.198.296-.766.963-.939 1.161-.173.198-.346.222-.642.074-.296-.148-1.249-.46-2.379-1.467-.879-.784-1.472-1.753-1.645-2.049-.173-.296-.018-.456.13-.604.134-.133.296-.346.444-.519.148-.173.198-.297.296-.494.099-.198.05-.371-.025-.519-.074-.148-.667-1.607-.914-2.202-.24-.577-.485-.499-.667-.508l-.568-.01c-.198 0-.519.074-.79.371-.271.297-1.037 1.014-1.037 2.472s1.062 2.868 1.21 3.066c.148.198 2.089 3.19 5.062 4.474.707.305 1.259.487 1.689.623.71.226 1.355.194 1.866.118.569-.085 1.75-.716 1.997-1.407.247-.692.247-1.284.173-1.407-.074-.123-.271-.198-.568-.346z"/>
           </svg>
-          <span data-i18n="hero.ctaWhatsapp">Chat via WhatsApp</span>
+          <span data-i18n="hero.ctaWhatsapp">Hubungi Kamin</span>
         </a>
       </div>
 
@@ -1131,8 +1171,8 @@
         @else
           <img src="{{ $setting->logo ? asset('storage/'.$setting->logo) : asset('images/logo.png') }}" alt="{{ $setting->site_title }}" style="width:140px;height:140px;max-width:100%;object-fit:contain;margin:0 0 6px 0;"/>
         @endif
-        <h1 class="brand_name" style="margin:0 0 6px 0;">
-          <a href="./">{{ $setting->site_title }}</a>
+        <h1 class="brand_name" style="margin:0 0 6px 0;font-family:'League Spartan', sans-serif;">
+          <a href="./" style="font-family:'League Spartan', sans-serif;">{{ $setting->site_title }}</a>
         </h1>
         <p class="brand_slogan" style="margin:0;">{{ $setting->brand_slogan }}</p>
       </div>
@@ -1373,7 +1413,7 @@
           <div class="grid_3 footer-col footer-col--brand">
             <a href="./" class="footer-brand">
               <img src="{{ $setting->logo ? asset('storage/'.$setting->logo) : asset('images/logo.png') }}" alt="{{ $setting->site_title }}"/>
-              <span>{{ $setting->site_title }}</span>
+              <span style="font-family:'League Spartan', sans-serif !important; text-transform:none !important;">{{ $setting->site_title }}</span>
             </a>
             @if($setting->footer_address)
             <p>{{ $setting->footer_address }}</p>

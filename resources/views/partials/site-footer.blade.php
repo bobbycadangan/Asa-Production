@@ -6,6 +6,17 @@
      karena halaman ini (kontak/blog/about) tidak memuat jQuery + jquery.rd-parallax.js
      seperti landing page. Kalau cuma andalkan data-url + JS, gambarnya nggak pernah
      muncul di sini — makanya sebelumnya footer di halaman ini keliatan polos navy saja. --}}
+<style>
+  /* Footer brand font: samakan dengan navbar (League Spartan).
+     Selector dibuat lebih spesifik (footer#contact ...) supaya menang
+     lawan aturan font di style.css tema. text-transform:none dipaksa
+     juga karena tema aslinya bikin teks ini jadi KAPITAL SEMUA
+     ("ASA PRODUCTION"), padahal navbar tampil normal ("Asa Production"). */
+  footer#contact .footer-brand span{
+    font-family: 'League Spartan', sans-serif !important;
+    text-transform: none !important;
+  }
+</style>
 <footer id="contact">
   @php($footerBgUrl = $setting->footer_bg ? asset('storage/'.$setting->footer_bg) : asset('images/parallax2.jpg'))
   <div class="parallax" data-url="{{ $footerBgUrl }}" data-mobile="true" data-speed="0.5 " data-direction="inverted" style="background-image:url('{{ $footerBgUrl }}');background-size:cover;background-position:center center;">
@@ -26,7 +37,7 @@
         <div class="grid_3 footer-col footer-col--brand">
           <a href="{{ route('home') }}" class="footer-brand">
             <img src="{{ $setting->logo ? asset('storage/'.$setting->logo) : asset('images/logo.png') }}" alt="{{ $setting->site_title }}"/>
-            <span>{{ $setting->site_title }}</span>
+            <span style="font-family:'League Spartan', sans-serif !important; text-transform:none !important;">{{ $setting->site_title }}</span>
           </a>
           @if($setting->footer_address)
           <p>{{ $setting->footer_address }}</p>

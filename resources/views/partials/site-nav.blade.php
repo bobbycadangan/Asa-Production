@@ -75,11 +75,12 @@
   .site-nav.is-scrolled .site-nav_brand img{ height: 28px; }
   .site-nav_brand span{ font-family: 'League Spartan', sans-serif; color: #fff; font-size: 16px; line-height: 1; font-weight: 800; letter-spacing: .01em; white-space: nowrap; }
   {{-- Menu sekarang flex:1 1 auto (bukan 0 0 auto) + justify-content:center
-       supaya dia mengisi sisa ruang di antara running text promo dan grup
-       kanan (bahasa + tombol WhatsApp), lalu isinya (Home/Layanan/Info)
-       disejajarkan ke tengah ruang itu — bukan menempel rapat di sebelah
-       kanan running text seperti sebelumnya. --}}
-  .site-nav_menu{ display: flex; align-items: center; justify-content: flex-start; gap: 22px; list-style: none; margin: 0; padding: 0; flex: 1 1 auto; min-width: 0; }
+       Diubah (permintaan user): menu sekarang flex:0 0 auto supaya nempel
+       rapat di sebelah kiri grup kanan (bahasa + tombol WhatsApp), bukan
+       ikut menggelembung mengisi sisa ruang. Sisa ruang diserap penuh oleh
+       .site-nav_marquee di sebelahnya, jadi teks berjalan otomatis lebih
+       lebar. --}}
+  .site-nav_menu{ display: flex; align-items: center; justify-content: flex-start; gap: 22px; list-style: none; margin: 0; padding: 0; flex: 0 0 auto; min-width: 0; }
   {{-- Setiap <li> juga dijadikan flex container sendiri (bukan cuma isinya)
        supaya link <a> biasa (Home) dan tombol dropdown (<button>) sama-sama
        dipusatkan oleh <li>-nya, bukan cuma oleh dirinya sendiri — ini yang
@@ -134,7 +135,7 @@
     gap: 8px;
     width: fit-content;
     max-width: 100%;
-    margin: 6px auto 2px;
+    margin: 2px auto 2px;
     background: linear-gradient(180deg, var(--brand-accent, #2E8BFF), var(--brand-light, #0051B5));
     color: #fff !important;
     font-size: 14px;
@@ -181,7 +182,7 @@
     flex: 1 1 auto;
     min-width: 0;
     overflow: hidden;
-    max-width: 260px;
+    max-width: 480px;
     margin: 0 4px;
     white-space: nowrap;
     position: relative;
@@ -245,6 +246,7 @@
     white-space: nowrap;
     transition: background .18s ease, color .18s ease;
   }
+
   .dropdown-menu a::after{ display: none; }
   .dropdown-menu a:hover{ color: #fff; background: rgba(255,255,255,.1); }
   .dropdown-menu a:active{ background: rgba(255,255,255,.18); }
@@ -285,7 +287,12 @@
     {{-- Tombol WhatsApp dipindah ke dalam dropdown hamburger di mobile:
          sembunyikan versi navbar-nya, tampilkan versi di dalam menu. --}}
     .site-nav_cta{ display: none; }
-    .site-nav_menu > li.site-nav_cta-item{ display: block; }
+    .site-nav_menu > li.site-nav_cta-item{
+      display: block;
+      margin-top: 6px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,.1);
+    }
     .site-nav_menu{
       position: absolute;
       top: calc(100% + 10px);
@@ -296,7 +303,7 @@
       justify-content: flex-start;
       gap: 0;
       margin: 0;
-      padding: 8px;
+      padding: 10px;
       max-height: 0;
       overflow: hidden;
       opacity: 0;
@@ -308,11 +315,28 @@
       box-shadow: 0 16px 40px -12px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.16);
       transition: max-height .35s cubic-bezier(.22,1,.36,1), opacity .25s ease;
     }
-    .site-nav_menu.is-open{ max-height: 480px; opacity: 1; }
+    .site-nav_menu.is-open{ max-height: 520px; opacity: 1; }
     .site-nav_menu > li{ align-items: stretch; }
-    .site-nav_menu > li > a{ display: block; padding: 14px 16px; }
+    {{-- Garis pemisah tipis antara Beranda / Layanan / Info supaya baris-baris
+         menu nggak terasa menempel satu sama lain (rapi & mudah dipindai). --}}
+    .site-nav_menu > li:nth-child(2),
+    .site-nav_menu > li:nth-child(3){ border-top: 1px solid rgba(255,255,255,.08); }
+    .site-nav_menu > li > a{
+      display: block;
+      padding: 14px 16px;
+      border-radius: 14px;
+      transition: background .18s ease, color .18s ease;
+    }
+    .site-nav_menu > li > a:active{ background: rgba(255,255,255,.08); }
     .site-nav_menu .has-dropdown{ width: 100%; }
-    .dropdown-toggle{ width: 100%; padding: 14px 8px; justify-content: space-between; }
+    .dropdown-toggle{
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      justify-content: space-between;
+      transition: background .18s ease;
+    }
+    .dropdown-toggle:active{ background: rgba(255,255,255,.08); }
     .dropdown-menu{
       position: static;
       transform: none;
@@ -329,13 +353,23 @@
       overflow: hidden;
       transition: max-height .25s ease;
     }
-    .has-dropdown.is-open .dropdown-menu{ max-height: 300px; transform: none; }
-    .dropdown-menu a{ padding: 12px 16px; }
+    {{-- Panel kecil di dalam panel besar: latar & indent tipis supaya sub-item
+         (mis. daftar layanan) terlihat jelas sebagai "anak" dari tombol
+         Layanan/Info, bukan sejajar dengan menu utama. --}}
+    .has-dropdown.is-open .dropdown-menu{
+      max-height: 300px;
+      transform: none;
+      background: rgba(255,255,255,.04);
+      border-radius: 12px;
+      margin: 2px 0 6px;
+      padding: 4px;
+    }
+    .dropdown-menu a{ padding: 11px 14px 11px 26px; font-size: 13.5px; border-radius: 10px; }
     .site-nav_utility{ gap: 10px; margin-left: auto; }
     .lang-toggle{ padding: 5px 8px; }
     .lang-flag-icon{ width: 20px; height: 14px; }
-    #navLangSlot{ border-top: 1px solid rgba(255,255,255,.1); margin-top: 4px; padding-top: 4px; }
-    #navLangSlot .lang-toggle{ width: 100%; background: none; border: none; border-radius: 10px; padding: 12px 16px; justify-content: space-between; }
+    #navLangSlot{ border-top: 1px solid rgba(255,255,255,.1); margin-top: 6px; padding-top: 8px; }
+    #navLangSlot .lang-toggle{ width: 100%; background: none; border: none; border-radius: 14px; padding: 12px 16px; justify-content: space-between; }
     #navLangSlot .lang-toggle:hover{ background: rgba(255,255,255,.08); }
     #langSwitcher .dropdown-menu.lang-menu{
       position: static;
@@ -408,7 +442,7 @@
           <svg viewBox="0 0 32 32" width="18" height="18" fill="currentColor" style="flex-shrink:0;">
             <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.906 6.475L4 29l7.72-1.867A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.108 1.127-4.47-.233-.367A9.78 9.78 0 0 1 6.182 15c0-5.415 4.404-9.818 9.819-9.818S25.818 9.585 25.818 15 21.415 24.818 16.001 24.818zm5.396-7.34c-.296-.148-1.75-.864-2.021-.963-.271-.099-.469-.148-.667.148-.198.296-.766.963-.939 1.161-.173.198-.346.222-.642.074-.296-.148-1.249-.46-2.379-1.467-.879-.784-1.472-1.753-1.645-2.049-.173-.296-.018-.456.13-.604.134-.133.296-.346.444-.519.148-.173.198-.297.296-.494.099-.198.05-.371-.025-.519-.074-.148-.667-1.607-.914-2.202-.24-.577-.485-.499-.667-.508l-.568-.01c-.198 0-.519.074-.79.371-.271.297-1.037 1.014-1.037 2.472s1.062 2.868 1.21 3.066c.148.198 2.089 3.19 5.062 4.474.707.305 1.259.487 1.689.623.71.226 1.355.194 1.866.118.569-.085 1.75-.716 1.997-1.407.247-.692.247-1.284.173-1.407-.074-.123-.271-.198-.568-.346z"/>
           </svg>
-          <span>WhatsApp</span>
+          <span>WhatsApp Kami</span>
         </a>
       </li>
     </ul>
@@ -458,7 +492,7 @@
       <svg viewBox="0 0 32 32" width="18" height="18" fill="currentColor" style="flex-shrink:0;">
         <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.906 6.475L4 29l7.72-1.867A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.108 1.127-4.47-.233-.367A9.78 9.78 0 0 1 6.182 15c0-5.415 4.404-9.818 9.819-9.818S25.818 9.585 25.818 15 21.415 24.818 16.001 24.818zm5.396-7.34c-.296-.148-1.75-.864-2.021-.963-.271-.099-.469-.148-.667.148-.198.296-.766.963-.939 1.161-.173.198-.346.222-.642.074-.296-.148-1.249-.46-2.379-1.467-.879-.784-1.472-1.753-1.645-2.049-.173-.296-.018-.456.13-.604.134-.133.296-.346.444-.519.148-.173.198-.297.296-.494.099-.198.05-.371-.025-.519-.074-.148-.667-1.607-.914-2.202-.24-.577-.485-.499-.667-.508l-.568-.01c-.198 0-.519.074-.79.371-.271.297-1.037 1.014-1.037 2.472s1.062 2.868 1.21 3.066c.148.198 2.089 3.19 5.062 4.474.707.305 1.259.487 1.689.623.71.226 1.355.194 1.866.118.569-.085 1.75-.716 1.997-1.407.247-.692.247-1.284.173-1.407-.074-.123-.271-.198-.568-.346z"/>
       </svg>
-      WhatsApp
+      WhatsApp Kami
     </a>
   </div>
 </nav>
