@@ -1,7 +1,21 @@
 <?php
 
+use App\Http\Controllers\Admin\AppMobileBenefitController;
+use App\Http\Controllers\Admin\AppMobileFaqController;
+use App\Http\Controllers\Admin\AppMobilePageController;
+use App\Http\Controllers\Admin\AppMobileProcessStepController;
+use App\Http\Controllers\Admin\AppMobileServiceController;
+use App\Http\Controllers\Admin\AppMobileStatController;
+use App\Http\Controllers\Admin\AppMobileTechBadgeController;
 use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\ContactMessageController;
+use App\Http\Controllers\Admin\CustomSystemBenefitController;
+use App\Http\Controllers\Admin\CustomSystemFaqController;
+use App\Http\Controllers\Admin\CustomSystemPageController;
+use App\Http\Controllers\Admin\CustomSystemProcessStepController;
+use App\Http\Controllers\Admin\CustomSystemServiceController;
+use App\Http\Controllers\Admin\CustomSystemStatController;
+use App\Http\Controllers\Admin\CustomSystemTechBadgeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\PartnerController;
@@ -11,13 +25,23 @@ use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TeamMemberController;
 use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\WebsiteBenefitController;
+use App\Http\Controllers\Admin\WebsiteFaqController;
+use App\Http\Controllers\Admin\WebsitePageController;
+use App\Http\Controllers\Admin\WebsiteProcessStepController;
+use App\Http\Controllers\Admin\WebsiteServiceController;
+use App\Http\Controllers\Admin\WebsiteStatController;
+use App\Http\Controllers\Admin\WebsiteTechBadgeController;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\AppMobileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CustomSystemController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PortfolioController as PublicPortfolioController;
+use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +57,27 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 |--------------------------------------------------------------------------
 */
 Route::get('/tentang-asa-production', [AboutController::class, 'index'])->name('about');
+
+/*
+|--------------------------------------------------------------------------
+| Solusi: Jasa Pembuatan Aplikasi Mobile (halaman publik)
+|--------------------------------------------------------------------------
+*/
+Route::get('/solusi/jasa-pembuatan-app-mobile', [AppMobileController::class, 'index'])->name('solusi.app-mobile');
+
+/*
+|--------------------------------------------------------------------------
+| Solusi: Jasa Pembuatan Website (halaman publik)
+|--------------------------------------------------------------------------
+*/
+Route::get('/solusi/jasa-pembuatan-website', [WebsiteController::class, 'index'])->name('solusi.website');
+
+/*
+|--------------------------------------------------------------------------
+| Solusi: Jasa Pembuatan Sistem Kustom (halaman publik)
+|--------------------------------------------------------------------------
+*/
+Route::get('/solusi/jasa-pembuatan-sistem-kustom', [CustomSystemController::class, 'index'])->name('solusi.custom-system');
 
 /*
 |--------------------------------------------------------------------------
@@ -101,6 +146,36 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(
     Route::resource('partners', PartnerController::class)->except(['show']);
     Route::resource('certificates', CertificateController::class)->except(['show']);
     Route::resource('faqs', FaqController::class)->except(['show']);
+
+    // Halaman "Jasa Pembuatan Aplikasi Mobile" (konten dinamis)
+    Route::get('app-mobile', [AppMobilePageController::class, 'edit'])->name('app-mobile.edit');
+    Route::put('app-mobile', [AppMobilePageController::class, 'update'])->name('app-mobile.update');
+    Route::resource('app-mobile-stats', AppMobileStatController::class)->except(['show']);
+    Route::resource('app-mobile-benefits', AppMobileBenefitController::class)->except(['show']);
+    Route::resource('app-mobile-services', AppMobileServiceController::class)->except(['show']);
+    Route::resource('app-mobile-process-steps', AppMobileProcessStepController::class)->except(['show']);
+    Route::resource('app-mobile-tech-badges', AppMobileTechBadgeController::class)->except(['show']);
+    Route::resource('app-mobile-faqs', AppMobileFaqController::class)->except(['show']);
+
+    // Halaman "Jasa Pembuatan Website" (konten dinamis)
+    Route::get('website', [WebsitePageController::class, 'edit'])->name('website.edit');
+    Route::put('website', [WebsitePageController::class, 'update'])->name('website.update');
+    Route::resource('website-stats', WebsiteStatController::class)->except(['show']);
+    Route::resource('website-benefits', WebsiteBenefitController::class)->except(['show']);
+    Route::resource('website-services', WebsiteServiceController::class)->except(['show']);
+    Route::resource('website-process-steps', WebsiteProcessStepController::class)->except(['show']);
+    Route::resource('website-tech-badges', WebsiteTechBadgeController::class)->except(['show']);
+    Route::resource('website-faqs', WebsiteFaqController::class)->except(['show']);
+
+    // Halaman "Jasa Pembuatan Sistem Kustom" (konten dinamis)
+    Route::get('custom-system', [CustomSystemPageController::class, 'edit'])->name('custom-system.edit');
+    Route::put('custom-system', [CustomSystemPageController::class, 'update'])->name('custom-system.update');
+    Route::resource('custom-system-stats', CustomSystemStatController::class)->except(['show']);
+    Route::resource('custom-system-benefits', CustomSystemBenefitController::class)->except(['show']);
+    Route::resource('custom-system-services', CustomSystemServiceController::class)->except(['show']);
+    Route::resource('custom-system-process-steps', CustomSystemProcessStepController::class)->except(['show']);
+    Route::resource('custom-system-tech-badges', CustomSystemTechBadgeController::class)->except(['show']);
+    Route::resource('custom-system-faqs', CustomSystemFaqController::class)->except(['show']);
 
     Route::get('contact-messages', [ContactMessageController::class, 'index'])->name('contact-messages.index');
     Route::get('contact-messages/poll-status', [ContactMessageController::class, 'pollStatus'])->name('contact-messages.poll-status');

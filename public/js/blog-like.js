@@ -35,24 +35,17 @@
   }
 
   // ===== Like button =====
+  // Catatan: batasan "1 like per browser" (localStorage + disable permanen)
+  // sengaja dihapus atas permintaan user — sekarang tombol boleh diklik
+  // berkali-kali, tiap klik akan menambah hitungan like ke server.
   var likeBtn = document.getElementById('likeBtn');
   if (likeBtn) {
     var likeUrl = likeBtn.getAttribute('data-url');
-    var storageKey = 'liked_post:' + likeUrl;
     var countEl = document.getElementById('likeCount');
 
-    function markLiked() {
-      likeBtn.classList.add('is-liked');
-      likeBtn.disabled = true;
-    }
-
-    try {
-      if (window.localStorage.getItem(storageKey)) {
-        markLiked();
-      }
-    } catch (e) { /* localStorage unavailable */ }
-
     likeBtn.addEventListener('click', function () {
+      // Kunci sementara cuma supaya 1 klik tidak terkirim dobel selagi
+      // request sebelumnya belum selesai (bukan supaya cuma bisa 1x like).
       if (likeBtn.disabled) { return; }
       likeBtn.disabled = true;
 
@@ -70,10 +63,10 @@
           if (countEl && typeof data.likes !== 'undefined') {
             countEl.textContent = data.likes;
           }
-          markLiked();
-          try { window.localStorage.setItem(storageKey, '1'); } catch (e) { /* ignore */ }
+          likeBtn.classList.add('is-liked');
         })
-        .catch(function () {
+        .catch(function () { /* ignore, biar bisa dicoba lagi */ })
+        .finally(function () {
           likeBtn.disabled = false;
         });
     });

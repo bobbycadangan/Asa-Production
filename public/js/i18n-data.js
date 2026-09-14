@@ -66,6 +66,7 @@ window.SITE_I18N = {
 
     // ---- Home: chatbot widget ----
     'chatbot.openLabel': 'Buka chat',
+    'chatbot.closeLabel': 'Tutup chat',
     'chatbot.subtitle': 'Biasanya balas dalam beberapa detik',
     'chatbot.placeholder': 'Tulis pertanyaan...',
     'chatbot.sendLabel': 'Kirim',
@@ -187,6 +188,7 @@ window.SITE_I18N = {
 
     // ---- Home: chatbot widget ----
     'chatbot.openLabel': 'Open chat',
+    'chatbot.closeLabel': 'Close chat',
     'chatbot.subtitle': 'Usually replies within a few seconds',
     'chatbot.placeholder': 'Type your question...',
     'chatbot.sendLabel': 'Send',

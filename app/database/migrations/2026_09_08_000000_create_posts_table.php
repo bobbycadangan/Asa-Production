@@ -12,11 +12,13 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->string('excerpt', 300)->nullable(); // ringkasan singkat untuk kartu blog
+            $table->string('thumbnail')->nullable();
+            $table->text('excerpt')->nullable();
             $table->longText('content');
-            $table->string('meta_description', 160); // wajib diisi, dipakai untuk tag <meta name="description">
-            $table->string('thumbnail');
-            $table->unsignedInteger('order_index')->default(0);
+
+            // Wajib diisi — dipakai untuk tag <meta name="description"> di halaman detail blog.
+            $table->string('meta_description', 160);
+
             $table->boolean('is_active')->default(true);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
