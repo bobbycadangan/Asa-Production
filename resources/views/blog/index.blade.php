@@ -23,6 +23,10 @@
 
   @include('partials.site-nav')
 
+  @include('partials.breadcrumb', ['items' => [
+    ['label' => 'Blog', 'i18n' => 'nav.blog'],
+  ]])
+
   {{-- ======================== MASTHEAD ======================== --}}
   <div class="blog-masthead">
     <div class="container">

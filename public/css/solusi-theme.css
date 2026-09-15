@@ -19,7 +19,7 @@
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  padding: 160px 0 90px;
+  padding: 90px 0 90px;
   color: #fff;
   position: relative;
   text-align: center;
@@ -477,7 +477,7 @@
   RESPONSIVE — masthead & general spacing di mobile
 ---------------------------------------------------------*/
 @media (max-width: 767px){
-  .solusi-masthead{ padding: 130px 0 70px; }
+  .solusi-masthead{ padding: 70px 0 70px; }
   .solusi-stats{ margin-top: -34px; }
   .solusi-cta{ padding: 44px 24px; border-radius: 18px; }
 }

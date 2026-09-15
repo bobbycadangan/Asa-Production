@@ -41,7 +41,7 @@ body.blog-body{
 =========================================================*/
 .blog-masthead{
   background: linear-gradient(180deg, rgba(0, 20, 46, 0.55) 0%, rgba(0, 20, 46, 0.85) 100%), url("../images/parallax.jpg") center center/cover no-repeat;
-  padding: 150px 0 70px;
+  padding: 70px 0 70px;
   color: #fff;
   position: relative;
 }
@@ -215,7 +215,7 @@ body.blog-body{
 =========================================================*/
 .article-masthead{
   background: linear-gradient(180deg, rgba(0, 20, 46, 0.55) 0%, rgba(0, 20, 46, 0.85) 100%), url("../images/parallax.jpg") center center/cover no-repeat;
-  padding: 150px 0 90px;
+  padding: 90px 0 90px;
   color: #fff;
   position: relative;
 }
@@ -465,7 +465,7 @@ body.blog-body{
 @media (max-width: 767px){
   .blog-masthead,
   .article-masthead{
-    padding-top: 130px;
+    padding-top: 60px;
   }
   .article-cover img{
     margin-top: -32px;
@@ -480,7 +480,7 @@ body.blog-body{
 =========================================================*/
 .about-masthead{
   background: linear-gradient(180deg, rgba(0, 20, 46, 0.55) 0%, rgba(0, 20, 46, 0.85) 100%), url("../images/parallax.jpg") center center/cover no-repeat;
-  padding: 150px 0 80px;
+  padding: 80px 0 80px;
   color: #fff;
   position: relative;
 }
@@ -551,12 +551,18 @@ body.blog-body{
   max-width: 760px;
 }
 
+/* Breadcrumb — style dipindah & digabung langsung ke dalam
+   resources/views/partials/breadcrumb.blade.php (self-contained,
+   sama seperti pola partials/site-nav.blade.php) supaya tidak ada
+   dua sumber definisi untuk komponen yang sama. Jangan tambahkan
+   aturan .breadcrumb-nav di sini lagi. */
+
 /* Who we are — foto + teks berdampingan */
 .about-hero-grid{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 46px;
-  align-items: start;
+  align-items: center;
 }
 .about-hero-grid .about-photo{
   border-radius: 18px;
@@ -616,8 +622,12 @@ body.blog-body{
 .team-card_name{
   font-size: 16.5px;
   font-weight: 700;
-  color: #1a2233;
   margin: 0 0 4px;
+  background: linear-gradient(135deg, var(--brand-light), var(--brand-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--brand-light); /* fallback kalau browser tidak dukung background-clip:text */
 }
 .team-card_role{
   font-size: 12.5px;
@@ -662,7 +672,7 @@ body.blog-body{
 
 @media (max-width: 767px){
   .about-masthead{
-    padding-top: 130px;
+    padding-top: 60px;
   }
   .about-section{
     padding: 50px 20px;
@@ -678,7 +688,7 @@ body.blog-body{
 =========================================================*/
 .contact-masthead{
   background: linear-gradient(180deg, rgba(0, 20, 46, 0.55) 0%, rgba(0, 20, 46, 0.85) 100%), url("../images/parallax.jpg") center center/cover no-repeat;
-  padding: 150px 0 70px;
+  padding: 70px 0 70px;
   color: #fff;
   position: relative;
 }
@@ -834,7 +844,7 @@ body.blog-body{
     grid-template-columns: 1fr;
   }
   .contact-masthead{
-    padding-top: 130px;
+    padding-top: 60px;
   }
 }
 

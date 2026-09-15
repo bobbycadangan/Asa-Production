@@ -16,6 +16,9 @@
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.css') }}"/>
   <link rel="stylesheet" href="{{ asset('css/owl-carousel.css') }}"/>
+  {{-- Dipakai untuk overview gambar portofolio yang bisa discroll ke samping,
+       konsisten dengan halaman /portfolio --}}
+  <link rel="stylesheet" href="{{ asset('css/portfolio-theme.css') }}"/>
 
   <script src="{{ asset('js/jquery.js') }}"></script>
   <script src="{{ asset('js/jquery-migrate-1.2.1.js') }}"></script>
@@ -1076,9 +1079,9 @@
         <li class="has-dropdown">
           <button type="button" class="dropdown-toggle"><span data-i18n="nav.servicesToggle">Layanan</span> <i class="fa fa-chevron-down" aria-hidden="true"></i></button>
           <ul class="dropdown-menu">
-            <li><a href="{{ route('solusi.website') }}">Jasa Pembuatan Website</a></li>
-            <li><a href="{{ route('solusi.app-mobile') }}">Jasa Pembuatan App Mobile</a></li>
-            <li><a href="{{ route('solusi.custom-system') }}">Jasa Pembuatan Sistem Kustom</a></li>
+            <li><a href="{{ route('solusi.website') }}" data-i18n="nav.servicesWebsite">Jasa Pembuatan Website</a></li>
+            <li><a href="{{ route('solusi.app-mobile') }}" data-i18n="nav.servicesAppMobile">Jasa Pembuatan App Mobile</a></li>
+            <li><a href="{{ route('solusi.custom-system') }}" data-i18n="nav.servicesCustomSystem">Jasa Pembuatan Sistem Kustom</a></li>
           </ul>
         </li>
         <li class="has-dropdown">
@@ -1104,7 +1107,7 @@
             <svg viewBox="0 0 32 32" width="18" height="18" fill="currentColor" style="flex-shrink:0;">
               <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.906 6.475L4 29l7.72-1.867A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.108 1.127-4.47-.233-.367A9.78 9.78 0 0 1 6.182 15c0-5.415 4.404-9.818 9.819-9.818S25.818 9.585 25.818 15 21.415 24.818 16.001 24.818zm5.396-7.34c-.296-.148-1.75-.864-2.021-.963-.271-.099-.469-.148-.667.148-.198.296-.766.963-.939 1.161-.173.198-.346.222-.642.074-.296-.148-1.249-.46-2.379-1.467-.879-.784-1.472-1.753-1.645-2.049-.173-.296-.018-.456.13-.604.134-.133.296-.346.444-.519.148-.173.198-.297.296-.494.099-.198.05-.371-.025-.519-.074-.148-.667-1.607-.914-2.202-.24-.577-.485-.499-.667-.508l-.568-.01c-.198 0-.519.074-.79.371-.271.297-1.037 1.014-1.037 2.472s1.062 2.868 1.21 3.066c.148.198 2.089 3.19 5.062 4.474.707.305 1.259.487 1.689.623.71.226 1.355.194 1.866.118.569-.085 1.75-.716 1.997-1.407.247-.692.247-1.284.173-1.407-.074-.123-.271-.198-.568-.346z"/>
             </svg>
-            <span>WhatsApp Kami</span>
+            <span data-i18n="nav.whatsappCta">WhatsApp Kami</span>
           </a>
         </li>
       </ul>
@@ -1112,13 +1115,13 @@
       <div class="site-nav_utility">
         {{-- Language switcher: dropdown, tampilan bendera SVG (bukan emoji, supaya tampil konsisten di semua OS/browser) --}}
         <div class="site-nav_lang has-dropdown" id="langSwitcher">
-          <button type="button" class="dropdown-toggle lang-toggle" id="langToggle" aria-haspopup="true" aria-expanded="false" aria-label="Change language">
+          <button type="button" class="dropdown-toggle lang-toggle" id="langToggle" aria-haspopup="true" aria-expanded="false" data-i18n-aria-label="nav.langChangeLabel" aria-label="Change language">
             <span class="lang-flag-icon" id="langCurrentFlag" aria-hidden="true">
               <svg viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg"><rect width="3" height="1" fill="#CE1126"/><rect y="1" width="3" height="1" fill="#FFFFFF"/></svg>
             </span>
             <i class="fa fa-chevron-down" aria-hidden="true"></i>
           </button>
-          <ul class="dropdown-menu lang-menu" role="listbox" aria-label="Choose language">
+          <ul class="dropdown-menu lang-menu" role="listbox" data-i18n-aria-label="nav.langChooseLabel" aria-label="Choose language">
             <li role="presentation">
               <button type="button" class="lang-option is-active" data-lang="id" role="option" aria-checked="true" aria-label="Bahasa Indonesia">
                 <span class="lang-option-label" aria-hidden="true">Indonesia</span>
@@ -1154,7 +1157,7 @@
         <svg viewBox="0 0 32 32" width="18" height="18" fill="currentColor" style="flex-shrink:0;">
           <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.906 6.475L4 29l7.72-1.867A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.108 1.127-4.47-.233-.367A9.78 9.78 0 0 1 6.182 15c0-5.415 4.404-9.818 9.819-9.818S25.818 9.585 25.818 15 21.415 24.818 16.001 24.818zm5.396-7.34c-.296-.148-1.75-.864-2.021-.963-.271-.099-.469-.148-.667.148-.198.296-.766.963-.939 1.161-.173.198-.346.222-.642.074-.296-.148-1.249-.46-2.379-1.467-.879-.784-1.472-1.753-1.645-2.049-.173-.296-.018-.456.13-.604.134-.133.296-.346.444-.519.148-.173.198-.297.296-.494.099-.198.05-.371-.025-.519-.074-.148-.667-1.607-.914-2.202-.24-.577-.485-.499-.667-.508l-.568-.01c-.198 0-.519.074-.79.371-.271.297-1.037 1.014-1.037 2.472s1.062 2.868 1.21 3.066c.148.198 2.089 3.19 5.062 4.474.707.305 1.259.487 1.689.623.71.226 1.355.194 1.866.118.569-.085 1.75-.716 1.997-1.407.247-.692.247-1.284.173-1.407-.074-.123-.271-.198-.568-.346z"/>
         </svg>
-        WhatsApp Kami
+        <span data-i18n="nav.whatsappCta">WhatsApp Kami</span>
       </a>
     </div>
 </nav>
@@ -1177,15 +1180,15 @@
     </video>
     <div class="container vide_content" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:40px;">
       <div class="hero-text hero-fade-in" style="flex:1 1 320px;align-self:center;max-width:560px;">
-        <h2 class="hero-fade-in_item" style="margin:0 0 16px 0;">{{ $setting->hero_title }}</h2>
-        <h3 class="hero-fade-in_item" style="margin:0 0 20px 0;">{{ $setting->hero_subtitle }}</h3>
+        <h2 class="hero-fade-in_item" style="margin:0 0 16px 0;"><span data-i18n-lang="id">{{ $setting->hero_title }}</span><span data-i18n-lang="en" style="display:none">{{ $setting->hero_title_en ?: $setting->hero_title }}</span></h2>
+        <h3 class="hero-fade-in_item" style="margin:0 0 20px 0;"><span data-i18n-lang="id">{{ $setting->hero_subtitle }}</span><span data-i18n-lang="en" style="display:none">{{ $setting->hero_subtitle_en ?: $setting->hero_subtitle }}</span></h3>
 
         <a href="https://wa.me/{{ $setting->whatsapp_number }}?text={{ urlencode($setting->whatsapp_message) }}"
            target="_blank" rel="noopener" class="btn btn-whatsapp hero-fade-in_item" style="display:inline-flex;align-items:center;gap:8px;font-size:17px;padding:16px 28px;margin-top:0;">
           <svg viewBox="0 0 32 32" width="30" height="30" fill="currentColor" style="vertical-align:middle;flex-shrink:0;">
             <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.906 6.475L4 29l7.72-1.867A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.108 1.127-4.47-.233-.367A9.78 9.78 0 0 1 6.182 15c0-5.415 4.404-9.818 9.819-9.818S25.818 9.585 25.818 15 21.415 24.818 16.001 24.818zm5.396-7.34c-.296-.148-1.75-.864-2.021-.963-.271-.099-.469-.148-.667.148-.198.296-.766.963-.939 1.161-.173.198-.346.222-.642.074-.296-.148-1.249-.46-2.379-1.467-.879-.784-1.472-1.753-1.645-2.049-.173-.296-.018-.456.13-.604.134-.133.296-.346.444-.519.148-.173.198-.297.296-.494.099-.198.05-.371-.025-.519-.074-.148-.667-1.607-.914-2.202-.24-.577-.485-.499-.667-.508l-.568-.01c-.198 0-.519.074-.79.371-.271.297-1.037 1.014-1.037 2.472s1.062 2.868 1.21 3.066c.148.198 2.089 3.19 5.062 4.474.707.305 1.259.487 1.689.623.71.226 1.355.194 1.866.118.569-.085 1.75-.716 1.997-1.407.247-.692.247-1.284.173-1.407-.074-.123-.271-.198-.568-.346z"/>
           </svg>
-          <span data-i18n="hero.ctaWhatsapp">Hubungi Kamin</span>
+          <span data-i18n="hero.ctaWhatsapp">Hubungi Kami</span>
         </a>
       </div>
 
@@ -1288,33 +1291,30 @@
       </div>
       <div class="about-split_col about-split_col--text wow fadeInRight" data-wow-delay="0.15s" data-wow-duration="0.9s">
         <div class="about-split_inner">
-          <span class="about-split_eyebrow">{{ $setting->about_label ?: 'Who We Are' }}</span>
-          <h2 class="about-split_title">{!! nl2br(e($setting->about_title)) !!}</h2>
+          @if($setting->about_label)
+          <span class="about-split_eyebrow"><span data-i18n-lang="id">{{ $setting->about_label }}</span><span data-i18n-lang="en" style="display:none">{{ $setting->about_label_en ?: $setting->about_label }}</span></span>
+          @else
+          <span class="about-split_eyebrow" data-i18n="about.label">Who We Are</span>
+          @endif
+          <h2 class="about-split_title"><span data-i18n-lang="id">{!! nl2br(e($setting->about_title)) !!}</span><span data-i18n-lang="en" style="display:none">{!! nl2br(e($setting->about_title_en ?: $setting->about_title)) !!}</span></h2>
           @if($setting->about_description)
-          <p class="about-split_desc">{{ $setting->about_description }}</p>
+          <p class="about-split_desc"><span data-i18n-lang="id">{{ $setting->about_description }}</span><span data-i18n-lang="en" style="display:none">{{ $setting->about_description_en ?: $setting->about_description }}</span></p>
           @endif
           <a href="{{ route('about') }}" class="btn">
-            {{ $setting->about_cta_text ?: 'Pelajari Lebih Lanjut' }}
+            @if($setting->about_cta_text)
+              <span data-i18n-lang="id">{{ $setting->about_cta_text }}</span><span data-i18n-lang="en" style="display:none">{{ $setting->about_cta_text_en ?: $setting->about_cta_text }}</span>
+            @else
+              <span data-i18n="about.cta">Pelajari Lebih Lanjut</span>
+            @endif
           </a>
         </div>
       </div>
     </section>
 
 
-    {{-- SERVICES INTRO / PARALLAX --}}
-    <section class="parallax center bg-secondary2" id="services" data-url="{{ $setting->services_bg ? asset('storage/'.$setting->services_bg) : asset('images/parallax.jpg') }}" data-mobile="true" data-speed="0.5">
-      <div class="well3">
-        <div class="container wow zoomIn" data-wow-duration="0.9s">
-          <h2>{{ $setting->services_title }}</h2>
-          <hr/>
-          <p>{{ $setting->services_description }}</p>
-        </div>
-      </div>
-    </section>
-
     {{-- SERVICES FEATURES --}}
     @if($services->count())
-    <section class="well well__ins1 center">
+    <section class="well well__ins1 center" id="services">
       <div class="container">
         <div class="row">
           @foreach($services as $service)
@@ -1339,7 +1339,10 @@
     <section class="thumb-container" id="gallery">
       @foreach($portfolios as $item)
       <div class="item wow zoomIn" data-wow-delay="{{ 0.08 * ($loop->index % 6) }}s" data-wow-duration="0.7s">
-        <a class="portfolio-thumb thumb" style="padding-bottom:73.17073170731707%;" href="{{ asset('storage/'.$item->image) }}">
+        {{-- data-full & data-title dipakai portfolio-lightbox.js untuk overview
+             gambar yang bisa discroll/digeser ke samping, sama seperti di
+             halaman /portfolio. href tetap ada sebagai fallback jika JS mati. --}}
+        <a class="portfolio-thumb" style="padding-bottom:73.17073170731707%;" href="{{ asset('storage/'.$item->image) }}" data-full="{{ asset('storage/'.$item->image) }}" data-title="{{ $item->title }}">
           <img src="{{ asset('storage/'.$item->thumbnail) }}" alt="{{ $item->title }}" loading="lazy"/>
           <span class="thumb_overlay"></span>
         </a>
@@ -1347,6 +1350,7 @@
       @endforeach
     </section>
     @endif
+
 
     {{-- ARTIKEL TERBARU (BLOG) --}}
     @if($setting->blog_section_enabled && $latestPosts->count())
@@ -1423,9 +1427,9 @@
       <div class="well4">
         <div class="container center wow fadeInUp" data-wow-delay="0.2s">
           <hr/>
-          <h2>{{ $setting->footer_title }}</h2>
-          <h3>{{ $setting->footer_subtitle }}</h3>
-          <a class="btn" href="{{ $setting->footer_cta_link ?: 'https://wa.me/'.$setting->whatsapp_number }}">{{ $setting->footer_cta_text }}</a>
+          <h2><span data-i18n-lang="id">{{ $setting->footer_title }}</span><span data-i18n-lang="en" style="display:none">{{ $setting->footer_title_en ?: $setting->footer_title }}</span></h2>
+          <h3><span data-i18n-lang="id">{{ $setting->footer_subtitle }}</span><span data-i18n-lang="en" style="display:none">{{ $setting->footer_subtitle_en ?: $setting->footer_subtitle }}</span></h3>
+          <a class="btn" href="{{ $setting->footer_cta_link ?: 'https://wa.me/'.$setting->whatsapp_number }}"><span data-i18n-lang="id">{{ $setting->footer_cta_text }}</span><span data-i18n-lang="en" style="display:none">{{ $setting->footer_cta_text_en ?: $setting->footer_cta_text }}</span></a>
         </div>
       </div>
     </div>
@@ -1458,16 +1462,14 @@
             </ul>
           </div>
 
-          @if($services->count())
           <div class="grid_2 footer-col footer-col--services">
             <h4 data-i18n="footer.servicesTitle">Layanan</h4>
             <ul class="footer-links">
-              @foreach($services->take(6) as $service)
-              <li><a href="#services">{{ $service->title }}</a></li>
-              @endforeach
+              <li><a href="{{ route('solusi.website') }}" data-i18n="nav.servicesWebsite">Jasa Pembuatan Website</a></li>
+              <li><a href="{{ route('solusi.app-mobile') }}" data-i18n="nav.servicesAppMobile">Jasa Pembuatan App Mobile</a></li>
+              <li><a href="{{ route('solusi.custom-system') }}" data-i18n="nav.servicesCustomSystem">Jasa Pembuatan Sistem Kustom</a></li>
             </ul>
           </div>
-          @endif
 
           <div class="grid_2 footer-col footer-col--company">
             <h4 data-i18n="footer.companyTitle">Perusahaan</h4>
@@ -1511,12 +1513,30 @@
   </footer>
 </div>
 
+{{-- ======================== PORTFOLIO LIGHTBOX ======================== --}}
+{{-- Overview gambar portofolio: bisa discroll/digeser ke samping (swipe di
+     HP, drag mouse atau tombol panah di desktop) untuk pindah antar gambar,
+     sama seperti di halaman /portfolio. --}}
+<div class="portfolio-lightbox" id="portfolioLightbox">
+  <button type="button" class="portfolio-lightbox_close" id="portfolioLightboxClose" data-i18n-aria-label="portfolioPage.lightboxClose" aria-label="Tutup">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <button type="button" class="portfolio-lightbox_nav portfolio-lightbox_nav--prev" id="portfolioLightboxPrev" data-i18n-aria-label="portfolioPage.lightboxPrev" aria-label="Sebelumnya">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <button type="button" class="portfolio-lightbox_nav portfolio-lightbox_nav--next" id="portfolioLightboxNext" data-i18n-aria-label="portfolioPage.lightboxNext" aria-label="Berikutnya">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <div class="portfolio-lightbox_track" id="portfolioLightboxTrack"></div>
+</div>
+
 @include('partials.chatbot-widget')
 
 <script src="{{ asset('js/script.js') }}"></script>
 {{-- script.js otomatis meng-include jquery.fancybox, owl-carousel, wow.js,
      jquery.vide.js, dan library lain lewat document.write(), sesuai
      struktur asli template. Jangan load ulang manual di sini. --}}
+<script src="{{ asset('js/portfolio-lightbox.js') }}"></script>
 <script>
   (function () {
     // ===== Language switcher (ID / EN) =====

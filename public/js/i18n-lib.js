@@ -15,11 +15,26 @@
     data-i18n="key"                 -> element textContent
     data-i18n-placeholder="key"     -> element placeholder attr
     data-i18n-aria-label="key"      -> element aria-label attr
+    data-i18n-tooltip="key"         -> element data-tooltip attr
+                                        (used by CSS ::after content
+                                        tooltips, e.g. copy-link button)
     data-i18n-var-<name>="value"    -> fills {<name>} inside the
                                         translated string, e.g.
                                         data-i18n-var-site="Acme"
                                         with a dictionary entry of
                                         "Hi {site}!"
+    data-i18n-lang="id" / "en"      -> shows this element only when it
+                                        matches the active language,
+                                        hides it otherwise. For admin-
+                                        editable (database) text that
+                                        has separate ID/EN copies
+                                        instead of a dictionary key —
+                                        e.g. the homepage "Tentang
+                                        Kami" section. Give the EN copy
+                                        style="display:none" in the
+                                        markup so there's no flash of
+                                        duplicate text before this
+                                        script runs.
 ========================================================*/
 (function (global) {
   var LANG_STORAGE_KEY = 'site_lang';
@@ -81,6 +96,12 @@
     });
     scope.querySelectorAll('[data-i18n-aria-label]').forEach(function (el) {
       el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria-label'), varsFor(el)));
+    });
+    scope.querySelectorAll('[data-i18n-tooltip]').forEach(function (el) {
+      el.setAttribute('data-tooltip', t(el.getAttribute('data-i18n-tooltip'), varsFor(el)));
+    });
+    scope.querySelectorAll('[data-i18n-lang]').forEach(function (el) {
+      el.style.display = (el.getAttribute('data-i18n-lang') === currentLang) ? '' : 'none';
     });
     if (!root) { document.documentElement.setAttribute('lang', currentLang); }
   }

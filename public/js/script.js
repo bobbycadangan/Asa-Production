@@ -240,22 +240,29 @@ document.write('<meta name="viewport" content="width=device-width,initial-scale=
     if (o.length > 0) {
         include('js/owl.carousel.min.js');
         $(document).ready(function () {
-            o.owlCarousel({
-                margin: 30,
-                autoplay: true,
-                autoplayTimeout: 2500,
-                autoplaySpeed: 300,
-                loop: true,
-                center: true,
-                smartSpeed: 300,
-                dots: true,
-                dotsEach: 1,
-                nav: false,
-                responsive: {
-                    0: { items: 1 },
-                    768: { items: 2 },
-                    992: { items: 3, stagePadding: 60 }
-                }
+            o.each(function () {
+                var $this = $(this);
+                // Testimoni: samakan iramanya dengan marquee logo klien
+                // (1.8 detik per item — lihat $moveFraction/$rightDuration di
+                // resources/views/home.blade.php, bagian partner-marquee).
+                var timeout = $this.hasClass('testimonial-carousel') ? 1800 : 2500;
+                $this.owlCarousel({
+                    margin: 30,
+                    autoplay: true,
+                    autoplayTimeout: timeout,
+                    autoplaySpeed: 300,
+                    loop: true,
+                    center: true,
+                    smartSpeed: 300,
+                    dots: true,
+                    dotsEach: 1,
+                    nav: false,
+                    responsive: {
+                        0: { items: 1 },
+                        768: { items: 2 },
+                        992: { items: 3, stagePadding: 60 }
+                    }
+                });
             });
         });
     }

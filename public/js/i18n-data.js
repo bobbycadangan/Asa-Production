@@ -18,6 +18,15 @@ window.SITE_I18N = {
     'nav.faq': 'FAQ',
     'nav.contact': 'Kontak',
     'nav.toggleLabel': 'Buka menu',
+    'nav.servicesWebsite': 'Jasa Pembuatan Website',
+    'nav.servicesAppMobile': 'Jasa Pembuatan App Mobile',
+    'nav.servicesCustomSystem': 'Jasa Pembuatan Sistem Kustom',
+    'nav.whatsappCta': 'WhatsApp Kami',
+    'nav.langChangeLabel': 'Ganti bahasa',
+    'nav.langChooseLabel': 'Pilih bahasa',
+
+    // ---- Chatbot widget (shared across all pages) ----
+    'chatbot.windowLabel': 'Live chat',
 
     // ---- Home: hero ----
     'hero.ctaWhatsapp': 'Hubungi Kami',
@@ -114,6 +123,10 @@ window.SITE_I18N = {
     'portfolioPage.viewProject': 'Lihat Proyek →',
     'portfolioPage.empty': 'Belum ada portofolio yang dipublikasikan.',
     'portfolioPage.emptyFiltered': 'Belum ada proyek pada kategori ini.',
+    'portfolioPage.viewDetail': 'Lihat detail proyek',
+    'portfolioPage.lightboxClose': 'Tutup',
+    'portfolioPage.lightboxPrev': 'Sebelumnya',
+    'portfolioPage.lightboxNext': 'Berikutnya',
 
     // ---- Blog show (article) page ----
     'blogShow.backToBlog': 'Kembali ke Blog',
@@ -124,8 +137,16 @@ window.SITE_I18N = {
     'blogShow.shareLinkedin': 'Bagikan ke LinkedIn',
     'blogShow.shareX': 'Bagikan ke X',
     'blogShow.copyLink': 'Salin tautan artikel',
+    'blogShow.copyLinkTooltip': 'Salin Link',
     'blogShow.likeLabel': 'Suka',
-    'blogShow.relatedTitle': 'Artikel Lainnya'
+    'blogShow.relatedTitle': 'Artikel Lainnya',
+
+    // ---- Solusi pages (website / app-mobile / custom-system) shared CTAs ----
+    'solusi.ctaFreeConsult': 'Konsultasi Gratis',
+    'solusi.ctaViewPortfolio': 'Lihat Portofolio',
+    'solusi.ctaViewAllPortfolio': 'Lihat Semua Portofolio',
+    'solusi.ctaWhatsapp': 'Chat via WhatsApp',
+    'solusi.ctaContactForm': 'Isi Form Kontak'
   },
 
   en: {
@@ -140,6 +161,15 @@ window.SITE_I18N = {
     'nav.faq': 'FAQ',
     'nav.contact': 'Contact',
     'nav.toggleLabel': 'Toggle menu',
+    'nav.servicesWebsite': 'Website Development Services',
+    'nav.servicesAppMobile': 'Mobile App Development Services',
+    'nav.servicesCustomSystem': 'Custom System Development Services',
+    'nav.whatsappCta': 'WhatsApp Us',
+    'nav.langChangeLabel': 'Change language',
+    'nav.langChooseLabel': 'Choose language',
+
+    // ---- Chatbot widget (shared across all pages) ----
+    'chatbot.windowLabel': 'Live chat',
 
     // ---- Home: hero ----
     'hero.ctaWhatsapp': 'Chat via WhatsApp',
@@ -236,6 +266,10 @@ window.SITE_I18N = {
     'portfolioPage.viewProject': 'View Project →',
     'portfolioPage.empty': 'No portfolio items have been published yet.',
     'portfolioPage.emptyFiltered': 'No projects in this category yet.',
+    'portfolioPage.viewDetail': 'View project detail',
+    'portfolioPage.lightboxClose': 'Close',
+    'portfolioPage.lightboxPrev': 'Previous',
+    'portfolioPage.lightboxNext': 'Next',
 
     // ---- Blog show (article) page ----
     'blogShow.backToBlog': 'Back to Blog',
@@ -246,7 +280,15 @@ window.SITE_I18N = {
     'blogShow.shareLinkedin': 'Share on LinkedIn',
     'blogShow.shareX': 'Share on X',
     'blogShow.copyLink': 'Copy article link',
+    'blogShow.copyLinkTooltip': 'Copy Link',
     'blogShow.likeLabel': 'Like',
-    'blogShow.relatedTitle': 'More Articles'
+    'blogShow.relatedTitle': 'More Articles',
+
+    // ---- Solusi pages (website / app-mobile / custom-system) shared CTAs ----
+    'solusi.ctaFreeConsult': 'Free Consultation',
+    'solusi.ctaViewPortfolio': 'View Portfolio',
+    'solusi.ctaViewAllPortfolio': 'View All Portfolio',
+    'solusi.ctaWhatsapp': 'Chat via WhatsApp',
+    'solusi.ctaContactForm': 'Fill Contact Form'
   }
 };

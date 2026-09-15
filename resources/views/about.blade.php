@@ -23,6 +23,10 @@
 
   @include('partials.site-nav')
 
+  @include('partials.breadcrumb', ['items' => [
+    ['label' => 'Tentang Kami', 'i18n' => 'nav.about'],
+  ]])
+
   {{-- ======================== MASTHEAD ======================== --}}
   <div class="about-masthead">
     <div class="container">
@@ -34,12 +38,14 @@
 
   {{-- ======================== WHO WE ARE ======================== --}}
   <section class="about-section">
-    <span class="about-section_eyebrow">Who We Are</span>
     <div class="about-hero-grid">
       <div>
+        <span class="about-section_eyebrow" data-i18n="about.label">Who We Are</span>
         <h2 data-i18n="aboutPage.sectionTitle" data-i18n-var-site="{{ $setting->site_title ?? 'Asa Production' }}">Tentang {{ $setting->site_title ?? 'Asa Production' }}</h2>
-        <p data-i18n="aboutPage.sectionParagraph1" data-i18n-var-site="{{ $setting->site_title ?? 'Asa Production' }}">{{ $setting->site_title ?? 'Asa Production' }} adalah studio pengembangan website dan aplikasi yang berlokasi di Sidoarjo, Jawa Timur. Kami membantu bisnis dari berbagai skala untuk hadir secara profesional di dunia digital, mulai dari website profil perusahaan, sistem informasi custom, hingga aplikasi web yang disesuaikan dengan alur kerja masing-masing klien.</p>
-        <p data-i18n="aboutPage.sectionParagraph2">Kami percaya setiap bisnis punya kebutuhan yang berbeda, sehingga setiap proyek kami kerjakan dengan pendekatan yang disesuaikan — bukan template yang dipaksakan sama untuk semua orang.</p>
+        <p>
+          <span data-i18n-lang="id"><a href="https://www.instagram.com/asaproductionnewgen/" target="_blank" rel="noopener" style="color:var(--brand-light);">Asa Production</a> perusahaan yang bergerak dalam bidang IT dan penerbitan perangkat lunak (Software) yang sedang berkembang pesat, berlokasi di Kabupaten <a href="https://sidoarjokab.go.id/" target="_blank" rel="noopener" style="color:var(--brand-light);">Sidoarjo</a> - Jawa Timur. Didirikan pada tahun 2019 sebagai perusahaan rintisan berfokus pada bidang pengembangan perangkat lunak dan website. Kami menyediakan berbagai solusi dan produk seperti Aplikasi Warehouse Management System, Aplikasi Enterprise Resource Planning, Aplikasi Absensi Online, Aplikasi Customer Relationship Management, dan Aplikasi lainnya yang menunjang bisnis Anda.</span>
+          <span data-i18n-lang="en" style="display:none"><a href="https://www.instagram.com/asaproductionnewgen/" target="_blank" rel="noopener" style="color:var(--brand-light);">Asa Production</a> is a fast-growing IT and software publishing company based in <a href="https://sidoarjokab.go.id/" target="_blank" rel="noopener" style="color:var(--brand-light);">Sidoarjo Regency</a>, East Java. Founded in 2019 as a startup, we focus on software and website development. We provide a range of solutions and products such as Warehouse Management System applications, Enterprise Resource Planning applications, Online Attendance applications, Customer Relationship Management applications, and other applications to support your business.</span>
+        </p>
       </div>
       <div class="about-photo">
         <img src="{{ $setting->about_image ? asset('storage/'.$setting->about_image) : asset('images/parallax.jpg') }}" alt="{{ $setting->site_title ?? 'Asa Production' }}"/>

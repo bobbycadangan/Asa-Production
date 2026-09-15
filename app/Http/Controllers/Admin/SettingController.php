@@ -4,10 +4,31 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use App\Services\AutoTranslateService;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
+    /**
+     * Pasangan field ID -> field EN yang otomatis diterjemahkan
+     * saat kolom EN dikosongkan oleh admin.
+     */
+    private const AUTO_TRANSLATE_PAIRS = [
+        'hero_title' => 'hero_title_en',
+        'hero_subtitle' => 'hero_subtitle_en',
+        'about_title' => 'about_title_en',
+        'about_description' => 'about_description_en',
+        'about_label' => 'about_label_en',
+        'about_cta_text' => 'about_cta_text_en',
+        'footer_title' => 'footer_title_en',
+        'footer_subtitle' => 'footer_subtitle_en',
+        'footer_cta_text' => 'footer_cta_text_en',
+    ];
+
+    public function __construct(private AutoTranslateService $translator)
+    {
+    }
+
     public function edit()
     {
         $setting = Setting::current();
@@ -26,19 +47,26 @@ class SettingController extends Controller
             'promo_text' => ['nullable', 'string', 'max:255'],
             'blog_section_enabled' => ['nullable', 'boolean'],
             'hero_title' => ['required', 'string', 'max:255'],
+            'hero_title_en' => ['nullable', 'string', 'max:255'],
             'hero_subtitle' => ['nullable', 'string', 'max:255'],
+            'hero_subtitle_en' => ['nullable', 'string', 'max:255'],
             'about_title' => ['required', 'string', 'max:255'],
+            'about_title_en' => ['nullable', 'string', 'max:255'],
             'about_description' => ['nullable', 'string'],
+            'about_description_en' => ['nullable', 'string'],
             'about_label' => ['nullable', 'string', 'max:255'],
+            'about_label_en' => ['nullable', 'string', 'max:255'],
             'about_cta_text' => ['nullable', 'string', 'max:255'],
+            'about_cta_text_en' => ['nullable', 'string', 'max:255'],
             'about_cta_link' => ['nullable', 'string', 'max:255'],
-            'services_title' => ['required', 'string', 'max:255'],
-            'services_description' => ['nullable', 'string'],
             'whatsapp_number' => ['required', 'string', 'max:50'],
             'whatsapp_message' => ['nullable', 'string', 'max:255'],
             'footer_title' => ['required', 'string', 'max:255'],
+            'footer_title_en' => ['nullable', 'string', 'max:255'],
             'footer_subtitle' => ['nullable', 'string', 'max:255'],
+            'footer_subtitle_en' => ['nullable', 'string', 'max:255'],
             'footer_cta_text' => ['nullable', 'string', 'max:255'],
+            'footer_cta_text_en' => ['nullable', 'string', 'max:255'],
             'footer_cta_link' => ['nullable', 'string', 'max:255'],
             'footer_address' => ['nullable', 'string', 'max:255'],
             'footer_email' => ['nullable', 'email', 'max:255'],
@@ -50,7 +78,6 @@ class SettingController extends Controller
             'social_x' => ['nullable', 'string', 'max:255'],
             'logo' => ['nullable', 'file', 'mimetypes:image/png,image/jpeg,image/gif,image/webp,image/svg+xml,video/mp4,video/webm', 'max:10240'],
             'favicon' => ['nullable', 'image', 'max:1024'],
-            'services_bg' => ['nullable', 'image', 'max:4096'],
             'footer_bg' => ['nullable', 'image', 'max:4096'],
             'hero_video' => ['nullable', 'file', 'mimetypes:video/mp4,video/webm', 'max:51200'],
             'about_image' => ['nullable', 'image', 'max:4096'],
@@ -59,7 +86,7 @@ class SettingController extends Controller
         $data['promo_enabled'] = $request->boolean('promo_enabled');
         $data['blog_section_enabled'] = $request->boolean('blog_section_enabled');
 
-        foreach (['logo', 'favicon', 'services_bg', 'footer_bg', 'hero_video', 'about_image'] as $file) {
+        foreach (['logo', 'favicon', 'footer_bg', 'hero_video', 'about_image'] as $file) {
             if ($request->hasFile($file)) {
                 $data[$file] = $request->file($file)->store('settings', 'public');
             } else {
@@ -67,8 +94,42 @@ class SettingController extends Controller
             }
         }
 
+        $data = $this->fillMissingTranslations($data);
+
         $setting->update($data);
 
         return back()->with('success', 'Pengaturan berhasil disimpan.');
+    }
+
+    /**
+     * Untuk setiap pasangan ID/EN, kalau field EN dikosongkan admin
+     * tapi field ID diisi, otomatis terjemahkan lewat Groq (satu
+     * panggilan API untuk semua field sekaligus) supaya admin tidak
+     * perlu isi manual satu-satu.
+     */
+    private function fillMissingTranslations(array $data): array
+    {
+        $toTranslate = [];
+
+        foreach (self::AUTO_TRANSLATE_PAIRS as $idField => $enField) {
+            $idValue = $data[$idField] ?? null;
+            $enValue = $data[$enField] ?? null;
+
+            if (filled($idValue) && blank($enValue)) {
+                $toTranslate[$enField] = $idValue;
+            }
+        }
+
+        if (empty($toTranslate)) {
+            return $data;
+        }
+
+        $translated = $this->translator->translateBatch($toTranslate);
+
+        foreach ($translated as $enField => $englishText) {
+            $data[$enField] = $englishText;
+        }
+
+        return $data;
     }
 }

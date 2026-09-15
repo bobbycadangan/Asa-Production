@@ -1,7 +1,10 @@
 /*========================================================
-  Portfolio page — filter tab by category + simple lightbox.
+  Portfolio page — filter tab by category.
   Vanilla JS, no jQuery dependency (konsisten dengan halaman
   about/contact/blog yang ringan tanpa bundel script.js).
+
+  Logika lightbox overview gambar dipindah ke js/portfolio-lightbox.js
+  agar bisa dipakai bersama dengan galeri portofolio di halaman utama.
 ========================================================*/
 (function () {
   var filterWrap = document.getElementById('portfolioFilter');
@@ -34,39 +37,6 @@
           emptyFiltered.hidden = visibleCount !== 0;
         }
       });
-    });
-  }
-
-  // ===== Lightbox =====
-  var lightbox = document.getElementById('portfolioLightbox');
-  var lightboxImg = document.getElementById('portfolioLightboxImg');
-  var lightboxCaption = document.getElementById('portfolioLightboxCaption');
-  var lightboxClose = document.getElementById('portfolioLightboxClose');
-
-  if (lightbox && lightboxImg && lightboxClose) {
-    document.querySelectorAll('.portfolio-card_thumb').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var full = btn.getAttribute('data-full');
-        var title = btn.getAttribute('data-title') || '';
-        lightboxImg.setAttribute('src', full);
-        lightboxImg.setAttribute('alt', title);
-        if (lightboxCaption) { lightboxCaption.textContent = title; }
-        lightbox.classList.add('is-open');
-        document.body.style.overflow = 'hidden';
-      });
-    });
-
-    function closeLightbox() {
-      lightbox.classList.remove('is-open');
-      document.body.style.overflow = '';
-    }
-
-    lightboxClose.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', function (e) {
-      if (e.target === lightbox) { closeLightbox(); }
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { closeLightbox(); }
     });
   }
 })();

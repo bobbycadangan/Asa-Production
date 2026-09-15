@@ -23,6 +23,10 @@
 
   @include('partials.site-nav')
 
+  @include('partials.breadcrumb', ['items' => [
+    ['label' => 'Kontak', 'i18n' => 'nav.contact'],
+  ]])
+
   {{-- ======================== MASTHEAD ======================== --}}
   <div class="contact-masthead">
     <div class="container">

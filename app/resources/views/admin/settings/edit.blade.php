@@ -69,12 +69,20 @@
     <div class="card-header bg-white fw-semibold">Bagian Hero (Header)</div>
     <div class="card-body row g-3">
       <div class="col-md-6">
-        <label class="form-label">Judul Hero</label>
+        <label class="form-label">Judul Hero (ID)</label>
         <input type="text" name="hero_title" class="form-control" value="{{ old('hero_title', $setting->hero_title) }}" required>
       </div>
       <div class="col-md-6">
-        <label class="form-label">Sub Judul Hero</label>
+        <label class="form-label">Hero Title (EN) <span class="text-muted fw-normal">— kosongkan untuk pakai teks ID</span></label>
+        <input type="text" name="hero_title_en" class="form-control" value="{{ old('hero_title_en', $setting->hero_title_en) }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Sub Judul Hero (ID)</label>
         <input type="text" name="hero_subtitle" class="form-control" value="{{ old('hero_subtitle', $setting->hero_subtitle) }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Hero Subtitle (EN) <span class="text-muted fw-normal">— kosongkan untuk pakai teks ID</span></label>
+        <input type="text" name="hero_subtitle_en" class="form-control" value="{{ old('hero_subtitle_en', $setting->hero_subtitle_en) }}">
       </div>
       <div class="col-md-6">
         <label class="form-label">Video Latar (mp4/webm, opsional)</label>
@@ -88,16 +96,31 @@
     <div class="card-header bg-white fw-semibold">Tentang Kami</div>
     <div class="card-body row g-3">
       <div class="col-12">
-        <label class="form-label">Judul</label>
+        <div class="form-text mb-0">Isi kolom EN untuk menampilkan versi Inggris saat pengunjung mengganti bahasa di navbar. Kolom EN yang dikosongkan akan otomatis memakai teks ID sebagai fallback.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Judul (ID)</label>
         <input type="text" name="about_title" class="form-control" value="{{ old('about_title', $setting->about_title) }}" required>
       </div>
-      <div class="col-12">
-        <label class="form-label">Deskripsi</label>
+      <div class="col-md-6">
+        <label class="form-label">Title (EN)</label>
+        <input type="text" name="about_title_en" class="form-control" value="{{ old('about_title_en', $setting->about_title_en) }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Deskripsi (ID)</label>
         <textarea name="about_description" class="form-control" rows="3">{{ old('about_description', $setting->about_description) }}</textarea>
       </div>
       <div class="col-md-6">
-        <label class="form-label">Label Kecil (di atas judul)</label>
+        <label class="form-label">Description (EN)</label>
+        <textarea name="about_description_en" class="form-control" rows="3">{{ old('about_description_en', $setting->about_description_en) }}</textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Label Kecil / ID (di atas judul)</label>
         <input type="text" name="about_label" class="form-control" value="{{ old('about_label', $setting->about_label) }}" placeholder="Tentang Kami">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Small Label / EN</label>
+        <input type="text" name="about_label_en" class="form-control" value="{{ old('about_label_en', $setting->about_label_en) }}" placeholder="About Us">
       </div>
       <div class="col-md-6">
         <label class="form-label">Gambar</label>
@@ -107,12 +130,16 @@
         <input type="file" name="about_image" class="form-control" accept="image/*">
       </div>
       <div class="col-md-6">
-        <label class="form-label">Teks Tombol</label>
+        <label class="form-label">Link Tombol</label>
+        <input type="text" name="about_cta_link" class="form-control" value="{{ old('about_cta_link', $setting->about_cta_link) }}" placeholder="#services">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Teks Tombol (ID)</label>
         <input type="text" name="about_cta_text" class="form-control" value="{{ old('about_cta_text', $setting->about_cta_text) }}" placeholder="Pelajari Lebih Lanjut">
       </div>
       <div class="col-md-6">
-        <label class="form-label">Link Tombol</label>
-        <input type="text" name="about_cta_link" class="form-control" value="{{ old('about_cta_link', $setting->about_cta_link) }}" placeholder="#services">
+        <label class="form-label">Button Text (EN)</label>
+        <input type="text" name="about_cta_text_en" class="form-control" value="{{ old('about_cta_text_en', $setting->about_cta_text_en) }}" placeholder="Learn More">
       </div>
     </div>
   </div>
@@ -120,13 +147,21 @@
   <div class="card shadow-sm mb-3">
     <div class="card-header bg-white fw-semibold">Bagian Layanan</div>
     <div class="card-body row g-3">
-      <div class="col-12">
-        <label class="form-label">Judul</label>
+      <div class="col-md-6">
+        <label class="form-label">Judul (ID)</label>
         <input type="text" name="services_title" class="form-control" value="{{ old('services_title', $setting->services_title) }}" required>
       </div>
-      <div class="col-12">
-        <label class="form-label">Deskripsi</label>
+      <div class="col-md-6">
+        <label class="form-label">Title (EN)</label>
+        <input type="text" name="services_title_en" class="form-control" value="{{ old('services_title_en', $setting->services_title_en) }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Deskripsi (ID)</label>
         <textarea name="services_description" class="form-control" rows="3">{{ old('services_description', $setting->services_description) }}</textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Description (EN)</label>
+        <textarea name="services_description_en" class="form-control" rows="3">{{ old('services_description_en', $setting->services_description_en) }}</textarea>
       </div>
       <div class="col-md-6">
         <label class="form-label">Gambar Latar (parallax)</label>
@@ -157,16 +192,28 @@
     <div class="card-header bg-white fw-semibold">Footer</div>
     <div class="card-body row g-3">
       <div class="col-md-6">
-        <label class="form-label">Judul Footer</label>
+        <label class="form-label">Judul Footer (ID)</label>
         <input type="text" name="footer_title" class="form-control" value="{{ old('footer_title', $setting->footer_title) }}" required>
       </div>
       <div class="col-md-6">
-        <label class="form-label">Sub Judul Footer</label>
+        <label class="form-label">Footer Title (EN)</label>
+        <input type="text" name="footer_title_en" class="form-control" value="{{ old('footer_title_en', $setting->footer_title_en) }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Sub Judul Footer (ID)</label>
         <input type="text" name="footer_subtitle" class="form-control" value="{{ old('footer_subtitle', $setting->footer_subtitle) }}">
       </div>
       <div class="col-md-6">
-        <label class="form-label">Teks Tombol CTA</label>
+        <label class="form-label">Footer Subtitle (EN)</label>
+        <input type="text" name="footer_subtitle_en" class="form-control" value="{{ old('footer_subtitle_en', $setting->footer_subtitle_en) }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Teks Tombol CTA (ID)</label>
         <input type="text" name="footer_cta_text" class="form-control" value="{{ old('footer_cta_text', $setting->footer_cta_text) }}">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">CTA Button Text (EN)</label>
+        <input type="text" name="footer_cta_text_en" class="form-control" value="{{ old('footer_cta_text_en', $setting->footer_cta_text_en) }}">
       </div>
       <div class="col-md-6">
         <label class="form-label">Link Tombol CTA (opsional, default ke WhatsApp)</label>

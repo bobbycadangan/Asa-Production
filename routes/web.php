@@ -116,6 +116,10 @@ Route::post('/chat', [ChatbotController::class, 'send'])
     ->middleware('throttle:20,1')
     ->name('chat.send');
 
+Route::post('/chat/stream', [ChatbotController::class, 'stream'])
+    ->middleware('throttle:20,1')
+    ->name('chat.stream');
+
 /*
 |--------------------------------------------------------------------------
 | Auth routes (login admin)

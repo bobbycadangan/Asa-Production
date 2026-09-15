@@ -30,6 +30,11 @@
 
   @include('partials.site-nav')
 
+  @include('partials.breadcrumb', ['items' => [
+    ['label' => 'Blog', 'i18n' => 'nav.blog', 'url' => route('blog.index')],
+    ['label' => $post->title],
+  ]])
+
   {{-- ======================== ARTICLE HEADER ======================== --}}
   <div class="article-masthead">
     <div class="container">
@@ -66,7 +71,7 @@
         <a href="https://twitter.com/intent/tweet?url={{ urlencode($shareUrl) }}&amp;text={{ urlencode($post->title) }}" target="_blank" rel="noopener" class="share-btn share-btn--x" aria-label="Bagikan ke X" data-i18n-aria-label="blogShow.shareX">
           <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M18.24 2h3.3l-7.2 8.23L23 22h-6.9l-5.4-7.06L4.5 22H1.2l7.7-8.8L1 2h7.06l4.88 6.46L18.24 2Zm-1.16 18h1.83L7.02 3.9H5.06L17.08 20Z"/></svg>
         </a>
-        <button type="button" class="share-btn share-btn--copy" id="copyLinkBtn" data-url="{{ $shareUrl }}" data-tooltip="Salin Link" aria-label="Salin tautan artikel" data-i18n-aria-label="blogShow.copyLink">
+        <button type="button" class="share-btn share-btn--copy" id="copyLinkBtn" data-url="{{ $shareUrl }}" data-tooltip="Salin Link" data-i18n-tooltip="blogShow.copyLinkTooltip" aria-label="Salin tautan artikel" data-i18n-aria-label="blogShow.copyLink">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.5 4.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-2.83 2.83a5 5 0 0 0 7.07 7.07L12.5 19.5"/></svg>
         </button>
       </div>

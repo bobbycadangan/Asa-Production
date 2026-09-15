@@ -503,6 +503,7 @@ blockquote img {
   display: flex;
   flex-direction: column;
   gap: 40px;
+  margin-top: 56px;
 }
 .partner-marquee {
   overflow: hidden;
@@ -551,6 +552,7 @@ blockquote img {
   }
   .partner-marquee-wrap {
     gap: 28px;
+    margin-top: 36px;
   }
 }
 
@@ -643,7 +645,8 @@ blockquote img {
   height: 100%;
   object-fit: contain;
 }
-.thumb img {
+.thumb img,
+.portfolio-thumb img {
   -moz-transition: 0.5s all ease;
   -o-transition: 0.5s all ease;
   -webkit-transition: 0.5s all ease;
@@ -683,13 +686,15 @@ blockquote img {
 .lt-ie9 .thumb_overlay:before {
   display: none;
 }
-.thumb:hover .thumb_overlay {
+.thumb:hover .thumb_overlay,
+.portfolio-thumb:hover .thumb_overlay {
   opacity: 1;
 }
 .lt-ie9 .thumb:hover .thumb_overlay:before {
   display: block;
 }
-.thumb:hover img {
+.thumb:hover img,
+.portfolio-thumb:hover img {
   -moz-transform: scale(1.2);
   -ms-transform: scale(1.2);
   -o-transform: scale(1.2);
@@ -847,6 +852,58 @@ main {
 }
 .well__ins1 {
   padding-bottom: 88px;
+}
+
+/*==================  Services Feature Cards  ======================*/
+.well__ins1 .row {
+  align-items: stretch;
+}
+.well__ins1 .grid_4 {
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 48px 30px 40px;
+  box-shadow: 0 6px 24px rgba(0, 34, 76, 0.08);
+  border: 1px solid rgba(0, 34, 76, 0.06);
+  transition: background 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
+  cursor: pointer;
+}
+.well__ins1 .grid_4 img {
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+.well__ins1 .grid_4 hr {
+  transition: background 0.35s ease;
+}
+.well__ins1 .grid_4 h3,
+.well__ins1 .grid_4 p {
+  transition: color 0.35s ease;
+}
+.well__ins1 .grid_4:hover,
+.well__ins1 .grid_4:focus-within {
+  background: linear-gradient(135deg, var(--brand-accent), var(--brand-light) 55%, var(--brand-dark));
+  border-color: transparent;
+  box-shadow: 0 16px 40px rgba(0, 34, 76, 0.28);
+  transform: translateY(-8px);
+}
+.well__ins1 .grid_4:hover img,
+.well__ins1 .grid_4:focus-within img {
+  transform: scale(1.08);
+  filter: brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+}
+.well__ins1 .grid_4:hover hr,
+.well__ins1 .grid_4:focus-within hr {
+  background: #FFFFFF;
+}
+.well__ins1 .grid_4:hover h3,
+.well__ins1 .grid_4:hover p,
+.well__ins1 .grid_4:focus-within h3,
+.well__ins1 .grid_4:focus-within p {
+  color: #FFFFFF;
+}
+@media (max-width: 767px) {
+  .well__ins1 .grid_4 {
+    padding: 36px 24px 30px;
+  }
 }
 
 .well2 {

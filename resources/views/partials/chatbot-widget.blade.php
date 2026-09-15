@@ -15,7 +15,7 @@
     </svg>
   </button>
 
-  <div class="chatbot_window" id="chatbotWindow" role="dialog" aria-label="Live chat">
+  <div class="chatbot_window" id="chatbotWindow" role="dialog" data-i18n-aria-label="chatbot.windowLabel" aria-label="Live chat">
     <div class="chatbot_header">
       <div class="chatbot_header-info">
         <span class="chatbot_header-avatar">

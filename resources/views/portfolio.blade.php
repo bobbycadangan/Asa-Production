@@ -24,6 +24,10 @@
 
   @include('partials.site-nav')
 
+  @include('partials.breadcrumb', ['items' => [
+    ['label' => 'Portofolio', 'i18n' => 'nav.portfolio'],
+  ]])
+
   {{-- ======================== MASTHEAD ======================== --}}
   <div class="portfolio-masthead">
     <div class="container">
@@ -54,7 +58,7 @@
       <div class="portfolio-grid" id="portfolioGrid">
         @foreach($portfolios as $item)
         <div class="portfolio-card" data-category="{{ $item->category ?: 'all' }}">
-          <button type="button" class="portfolio-card_thumb" data-full="{{ asset('storage/'.$item->image) }}" data-title="{{ $item->title }}" aria-label="{{ $item->title ?: 'Lihat detail proyek' }}">
+          <button type="button" class="portfolio-card_thumb" data-full="{{ asset('storage/'.$item->image) }}" data-title="{{ $item->title }}" aria-label="{{ $item->title ?: 'Lihat detail proyek' }}" @unless($item->title) data-i18n-aria-label="portfolioPage.viewDetail" @endunless>
             <img src="{{ asset('storage/'.$item->thumbnail) }}" alt="{{ $item->title }}" loading="lazy"/>
           </button>
           <div class="portfolio-card_body">
@@ -82,14 +86,19 @@
   </div>
 
   {{-- ======================== LIGHTBOX ======================== --}}
+  {{-- Overview gambar: bisa discroll/digeser ke samping (swipe di HP,
+       drag mouse atau tombol panah di desktop) untuk pindah antar gambar. --}}
   <div class="portfolio-lightbox" id="portfolioLightbox">
-    <button type="button" class="portfolio-lightbox_close" id="portfolioLightboxClose" aria-label="Tutup">
+    <button type="button" class="portfolio-lightbox_close" id="portfolioLightboxClose" data-i18n-aria-label="portfolioPage.lightboxClose" aria-label="Tutup">
       <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
-    <figure class="portfolio-lightbox_content">
-      <img src="" alt="" id="portfolioLightboxImg"/>
-      <figcaption id="portfolioLightboxCaption"></figcaption>
-    </figure>
+    <button type="button" class="portfolio-lightbox_nav portfolio-lightbox_nav--prev" id="portfolioLightboxPrev" data-i18n-aria-label="portfolioPage.lightboxPrev" aria-label="Sebelumnya">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button type="button" class="portfolio-lightbox_nav portfolio-lightbox_nav--next" id="portfolioLightboxNext" data-i18n-aria-label="portfolioPage.lightboxNext" aria-label="Berikutnya">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="portfolio-lightbox_track" id="portfolioLightboxTrack"></div>
   </div>
 
   @include('partials.site-footer')
@@ -97,6 +106,7 @@
   <script src="{{ asset('js/i18n-data.js') }}"></script>
   <script src="{{ asset('js/i18n-lib.js') }}"></script>
   <script src="{{ asset('js/site-nav.js') }}"></script>
+  <script src="{{ asset('js/portfolio-lightbox.js') }}"></script>
   <script src="{{ asset('js/portfolio-filter.js') }}"></script>
   <script>
     {{-- site-nav.js sudah memanggil I18n.init & bindLangSwitcher;

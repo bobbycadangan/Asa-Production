@@ -37,7 +37,14 @@ return [
 
     'groq' => [
         'key' => env('GROQ_API_KEY'),
-        'model' => env('GROQ_MODEL', 'openai/gpt-oss-120b'),
+        // 'openai/gpt-oss-120b' (model lama) adalah model 120B yang berat &
+        // lambat untuk chatbot FAQ sederhana seperti ini. 'llama-3.1-8b-instant'
+        // jauh lebih cepat di Groq (biasanya <1 detik untuk time-to-first-token)
+        // dan kualitasnya lebih dari cukup untuk menjawab seputar isi website
+        // berdasarkan KONTEKS WEBSITE yang sudah disiapkan di system prompt.
+        // Kalau butuh kualitas jawaban lebih pintar & masih cukup cepat, coba
+        // 'llama-3.3-70b-versatile'. Override lewat GROQ_MODEL di .env.
+        'model' => env('GROQ_MODEL', 'llama-3.1-8b-instant'),
     ],
 
 ];
